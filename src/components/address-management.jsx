@@ -1,0 +1,142 @@
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addAddress, deleteAddress, selectAddress } from "../redux/userSlice";
+
+export default function AddressManagement() {
+  const dispatch = useDispatch();
+  const { addresses, selectedAddress } = useSelector(state => state.user);
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({
+    label: "",
+    street: "",
+    city: "",
+    zipCode: "",
+    phone: ""
+  });
+
+  const handleAddAddress = () => {
+    if (formData.label && formData.street && formData.city && formData.zipCode) {
+      dispatch(
+        addAddress({
+          id: Date.now(),
+          ...formData
+        })
+      );
+      setFormData({ label: "", street: "", city: "", zipCode: "", phone: "" });
+      setShowForm(false);
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+      <h3 className="text-2xl font-bold mb-4 text-gray-800">My Addresses</h3>
+
+      {/* Address List */}
+      <div className="mb-6">
+        {addresses.length > 0 ? (
+          addresses.map(address => (
+            <div
+              key={address.id}
+              onClick={() => dispatch(selectAddress(address))}
+              className={`p-4 mb-3 border-2 rounded-lg cursor-pointer transition ${
+                selectedAddress?.id === address.id
+                  ? "border-orange-500 bg-orange-50"
+                  : "border-gray-200 hover:border-orange-300"
+              }`}
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="font-semibold text-gray-800">{address.label}</p>
+                  <p className="text-sm text-gray-600">
+                    {address.street}, {address.city} - {address.zipCode}
+                  </p>
+                  <p className="text-sm text-gray-600">{address.phone}</p>
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    dispatch(deleteAddress(address.id));
+                  }}
+                  className="text-red-500 hover:text-red-700 font-semibold"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-600 text-center py-4">No addresses added yet</p>
+        )}
+      </div>
+
+      {/* Add Address Form */}
+      {!showForm ? (
+        <button
+          onClick={() => setShowForm(true)}
+          className="w-full px-4 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold"
+        >
+          + Add New Address
+        </button>
+      ) : (
+        <div className="border-2 border-gray-200 rounded-lg p-4">
+          <h4 className="font-semibold mb-4 text-gray-800">Add Address</h4>
+          <input
+            type="text"
+            placeholder="Label (e.g., Home, Office)"
+            value={formData.label}
+            onChange={(e) => setFormData({ ...formData, label: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
+          <input
+            type="text"
+            placeholder="Street Address"
+            value={formData.street}
+            onChange={(e) =>
+              setFormData({ ...formData, street: e.target.value })
+            }
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
+          <div className="flex gap-2 mb-2">
+            <input
+              type="text"
+              placeholder="City"
+              value={formData.city}
+              onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+            <input
+              type="text"
+              placeholder="Zip Code"
+              value={formData.zipCode}
+              onChange={(e) =>
+                setFormData({ ...formData, zipCode: e.target.value })
+              }
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+          </div>
+          <input
+            type="tel"
+            placeholder="Phone"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
+          <div className="flex gap-2">
+            <button
+              onClick={handleAddAddress}
+              className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold"
+            >
+              Save Address
+            </button>
+            <button
+              onClick={() => setShowForm(false)}
+              className="flex-1 px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 font-semibold"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

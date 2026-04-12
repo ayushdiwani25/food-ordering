@@ -72,13 +72,13 @@ export default function Footer() {
         <div className="bg-orange-600 rounded-lg p-6 mb-8">
           <h3 className="text-xl font-bold mb-2">Subscribe to our Newsletter</h3>
           <p className="text-orange-100 text-sm mb-4">Get exclusive offers and updates!</p>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-3">
             <input
               type="email"
               placeholder="Enter your email"
-              className="flex-1 px-4 py-2 rounded text-white border border-gray-500 bg-gray-800 focus:outline-none focus:border-white"
+              className="flex-1 px-4 py-3 rounded text-white border border-gray-500 bg-gray-800 focus:outline-none focus:border-white"
             />
-            <button className="bg-white text-orange-600 font-bold px-6 py-2 rounded hover:bg-gray-100">
+            <button className="bg-white text-orange-600 font-bold px-6 py-3 rounded hover:bg-gray-100 whitespace-nowrap">
               Subscribe
             </button>
           </div>
@@ -86,8 +86,8 @@ export default function Footer() {
 
         {/* Bottom Section */}
         <div className="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-          <p>&copy; {currentYear} FoodRush. All rights reserved.</p>
-          <div className="flex gap-4">
+          <p className="text-center md:text-left">&copy; {currentYear} FoodRush. All rights reserved.</p>
+          <div className="flex flex-wrap justify-center gap-4">
             <a href="#" className="hover:text-orange-400">Privacy Policy</a>
             <a href="#" className="hover:text-orange-400">Terms of Service</a>
             <a href="#" className="hover:text-orange-400">Cookies</a>

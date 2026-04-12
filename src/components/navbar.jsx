@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 // ===== HELPER: Navigation Links Data =====
 const NAVBAR_LINKS = [
@@ -75,10 +75,11 @@ function UserSection({ user, isLoggedIn }) {
 
 export default function Navbar({ cartCount }) {
   const { user, isLoggedIn } = useSelector(state => state.user);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 bg-linear-to-r from-orange-500 via-orange-400 to-red-500 text-white shadow-lg">
-      <div className="flex items-center justify-between px-8 py-4">
+      <div className="flex items-center justify-between px-4 md:px-8 py-4">
 
         {/* Logo */}
         <motion.div
@@ -96,12 +97,27 @@ export default function Navbar({ cartCount }) {
           <motion.h1 className="text-3xl font-black">FoodRush</motion.h1>
         </motion.div>
 
-        {/* Navigation Links */}
-        <ul className="flex gap-8">
+        {/* Desktop Navigation Links */}
+        <ul className="hidden md:flex gap-8">
           {NAVBAR_LINKS.map(({ path, label }) => (
             <NavbarLink key={path} path={path} label={label} />
           ))}
         </ul>
+
+        {/* Mobile Menu Toggle */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="md:hidden p-2 rounded-full bg-white/20 hover:bg-white/30 transition"
+          aria-label="Toggle mobile menu"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            {isMobileMenuOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
 
         {/* Right Section: Cart + Orders + User */}
         <div className="flex items-center gap-4">
@@ -151,6 +167,36 @@ export default function Navbar({ cartCount }) {
 
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-orange-600/95 backdrop-blur"
+          >
+            <ul className="flex flex-col gap-2 px-4 py-4">
+              {NAVBAR_LINKS.map(({ path, label }) => (
+                <li key={path}>
+                  <NavLink
+                    to={path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `block px-4 py-3 rounded-lg font-semibold transition-all ${
+                        isActive ? "bg-white/20 text-white" : "text-white/90 hover:bg-white/10"
+                      }`
+                    }
+                  >
+                    {label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

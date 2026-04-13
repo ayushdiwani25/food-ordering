@@ -11,9 +11,9 @@ export default function Home() {
   const [hoveredGallery, setHoveredGallery] = useState(null);
 
   const galleryItems = [
-    { id: 1, label: "Pizza", img: pizzaImg },
-    { id: 2, label: "Burger", img: burgerImg },
-    { id: 3, label: "Cold Drink", img: drinkImg },
+    { id: 1, label: "Pizza", category: "Pizza", img: pizzaImg },
+    { id: 2, label: "Burger", category: "Burger", img: burgerImg },
+    { id: 3, label: "Cold Drink", category: "Drinks", img: drinkImg },
   ];
 
   return (
@@ -140,16 +140,17 @@ export default function Home() {
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        {galleryItems.map((item) => (
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative overflow-hidden rounded-3xl shadow-xl group cursor-pointer h-80 border-4 border-white/20 hover:border-orange-400 transition-all duration-300"
-            onMouseEnter={() => setHoveredGallery(item.id)}
-            onMouseLeave={() => setHoveredGallery(null)}
-          >
+         {galleryItems.map((item) => (
+           <motion.div
+             key={item.id}
+             initial={{ opacity: 0, y: 20 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.8 }}
+             className="relative overflow-hidden rounded-3xl shadow-xl group cursor-pointer h-80 border-4 border-white/20 hover:border-orange-400 transition-all duration-300"
+             onMouseEnter={() => setHoveredGallery(item.id)}
+             onMouseLeave={() => setHoveredGallery(null)}
+             onClick={() => navigate('/food', { state: { category: item.category } })}
+           >
             {/* Background overlay for mobile */}
             <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all duration-300 z-10"></div>
             

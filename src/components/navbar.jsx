@@ -82,20 +82,20 @@ export default function Navbar({ cartCount }) {
       <div className="flex items-center justify-between px-4 md:px-8 py-4">
 
         {/* Logo */}
-        <motion.div
-          className="flex items-center gap-3"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <motion.img
-            src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png"
-            alt="logo"
-            className="w-12 h-12"
-            animate={{ rotate: [0, 5, -5, 0] }}
-            transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
-          />
-          <motion.h1 className="text-3xl font-black">FoodRush</motion.h1>
-        </motion.div>
+         <motion.div
+           className="flex items-center gap-2 md:gap-3"
+           whileHover={{ scale: 1.05 }}
+           whileTap={{ scale: 0.95 }}
+         >
+           <motion.img
+             src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png"
+             alt="logo"
+             className="w-8 h-8 md:w-12 md:h-12"
+             animate={{ rotate: [0, 5, -5, 0] }}
+             transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
+           />
+           <motion.h1 className="text-xl md:text-3xl font-black">FoodRush</motion.h1>
+         </motion.div>
 
         {/* Desktop Navigation Links */}
         <ul className="hidden md:flex gap-8">
@@ -119,17 +119,17 @@ export default function Navbar({ cartCount }) {
           </svg>
         </button>
 
-        {/* Right Section: Cart + Orders + User */}
-        <div className="flex items-center gap-4">
+         {/* Right Section: Cart + Orders + User */}
+         <div className="flex items-center gap-2 md:gap-4">
 
           {/* Cart Icon */}
-          <Link
-            to="/cart"
-            className="relative p-2 rounded-full bg-orange-100 hover:bg-orange-200 transition transform hover:scale-110"
-            title="View Cart"
-          >
-            <svg
-              className="w-6 h-6 text-orange-700"
+           <Link
+             to="/cart"
+             className="relative p-1.5 md:p-2 rounded-full bg-orange-100 hover:bg-orange-200 transition transform hover:scale-110"
+             title="View Cart"
+           >
+             <svg
+               className="w-5 h-5 md:w-6 md:h-6 text-orange-700"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -146,13 +146,13 @@ export default function Navbar({ cartCount }) {
           </Link>
 
           {/* Orders Icon */}
-          <Link
-            to="/orders"
-            className="p-2 rounded-full bg-orange-100 hover:bg-orange-200 transition transform hover:scale-110"
-            title="My Orders"
-          >
-            <svg
-              className="w-6 h-6 text-orange-700"
+           <Link
+             to="/orders"
+             className="p-1.5 md:p-2 rounded-full bg-orange-100 hover:bg-orange-200 transition transform hover:scale-110"
+             title="My Orders"
+           >
+             <svg
+               className="w-5 h-5 md:w-6 md:h-6 text-orange-700"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"

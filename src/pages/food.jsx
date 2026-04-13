@@ -2,16 +2,23 @@ import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import { MENU, RESTAURANTS } from "../data";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Food() {
   const cartItems = useSelector((state) => state.cart || []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [addedItems, setAddedItems] = useState({});
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    if (location.state?.category) {
+      setSelectedCategory(location.state.category);
+    }
+  }, [location.state]);
 
   const categories = ["All", ...new Set(MENU.map((item) => item.category))];
 

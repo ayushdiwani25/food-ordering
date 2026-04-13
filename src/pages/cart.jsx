@@ -32,28 +32,28 @@ export default function Cart() {
     0
   );
 
-  return (
-    <div className="min-h-screen bg-linear-to-br from-orange-50 to-yellow-50 p-6">
-      {/* Title */}
-      <h1 className="text-4xl font-extrabold text-center text-orange-600 mb-10">
-        🛒 Your Cart
-      </h1>
+    return (
+      <div className="min-h-screen bg-linear-to-br from-orange-50 to-yellow-50 p-4 md:p-6">
+        {/* Title */}
+        <h1 className="text-2xl md:text-4xl font-extrabold text-center text-orange-600 mb-6 md:mb-10">
+          🛒 Your Cart
+        </h1>
 
-      {cartItems.length === 0 ? (
-        <div className="text-center text-gray-500 text-lg">
-          Your cart is empty 😢
-        </div>
-      ) : (
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+        {cartItems.length === 0 ? (
+          <div className="text-center text-gray-500 text-lg mt-12">
+            Your cart is empty 😢
+          </div>
+        ) : (
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
           {/* LEFT: Cart Items */}
           <div className="md:col-span-2 space-y-6">
             {cartItems.map((item) => (
               <div
                 key={item.id}
-                className="flex items-start gap-4 bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition"
+                className="flex flex-col sm:flex-row items-start gap-3 bg-white p-4 md:p-6 rounded-2xl shadow-md hover:shadow-xl transition"
               >
                 {/* Image */}
-                <div className="w-32 h-32 bg-linear-to-br from-orange-100 to-yellow-100 rounded-xl overflow-hidden shrink-0 flex items-center justify-center">
+                <div className="w-full sm:w-28 md:w-32 h-32 sm:h-28 md:h-32 bg-linear-to-br from-orange-100 to-yellow-100 rounded-xl overflow-hidden shrink-0 flex items-center justify-center">
                   <img
                     src={item.img}
                     alt={item.name}
@@ -78,26 +78,26 @@ export default function Cart() {
                   </p>
 
                   {/* Quantity Controls */}
-                  <div className="flex items-center gap-3 mt-4">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-4">
                     <button
                       onClick={() => decreaseQty(item.id)}
-                      className="bg-orange-100 text-orange-600 px-3 py-1 rounded-lg hover:bg-orange-200 font-bold"
+                      className="bg-orange-100 text-orange-600 px-3 py-2 rounded-lg hover:bg-orange-200 font-bold min-w-[40px]"
                     >
                       −
                     </button>
 
-                    <span className="font-bold px-4">{item.qty}</span>
+                    <span className="font-bold px-4 text-lg">{item.qty}</span>
 
                     <button
                       onClick={() => increaseQty(item.id)}
-                      className="bg-orange-100 text-orange-600 px-3 py-1 rounded-lg hover:bg-orange-200 font-bold"
+                      className="bg-orange-100 text-orange-600 px-3 py-2 rounded-lg hover:bg-orange-200 font-bold min-w-[40px]"
                     >
                       +
                     </button>
 
                     <button
                       onClick={() => removeItem(item.id)}
-                      className="ml-auto bg-red-100 text-red-600 px-4 py-2 rounded-lg hover:bg-red-200 font-semibold"
+                      className="ml-auto bg-red-100 text-red-600 px-3 py-2 rounded-lg hover:bg-red-200 font-semibold w-full sm:w-auto mt-2 sm:mt-0"
                     >
                       Remove
                     </button>
@@ -108,7 +108,7 @@ export default function Cart() {
           </div>
 
           {/* RIGHT: Checkout Box */}
-          <div className="bg-white p-6 rounded-2xl shadow-lg h-fit sticky top-6">
+          <div className="bg-white p-5 md:p-6 rounded-2xl shadow-lg h-fit sticky top-4 md:top-6 order-first md:order-last">
             <h2 className="text-lg font-bold mb-4">Order Summary</h2>
 
             {/* Item List */}

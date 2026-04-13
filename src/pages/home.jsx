@@ -167,7 +167,7 @@ export default function Home() {
               animate={{ opacity: hoveredGallery === item.id ? 1 : 0.5 }}
               transition={{ duration: 0.3 }}
             >
-              <motion.div className="text-center">
+              \<motion.div className="text-center">
               
                 <p className="text-white font-bold text-lg mt-2">{item.label}</p>
               </motion.div>

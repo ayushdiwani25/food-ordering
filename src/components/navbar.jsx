@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -76,9 +76,35 @@ function UserSection({ user, isLoggedIn }) {
 export default function Navbar({ cartCount }) {
   const { user, isLoggedIn } = useSelector(state => state.user);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isNavbarHidden, setIsNavbarHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Hide navbar when scrolling down, show when scrolling up
+      // Only hide if scroll position is greater than 100px (to avoid hiding when at top)
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsNavbarHidden(true);
+      } else {
+        setIsNavbarHidden(false);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   return (
-    <nav className="sticky top-0 z-50 bg-linear-to-r from-orange-500 via-orange-400 to-red-500 text-white shadow-lg">
+    <nav 
+      className="sticky top-0 z-50 bg-linear-to-r from-orange-500 via-orange-400 to-red-500 text-white shadow-lg transition-transform duration-300 ease-in-out"
+      style={{
+        transform: isNavbarHidden ? "translateY(-100%)" : "translateY(0)"
+      }}
+    >
       <div className="flex items-center justify-between px-4 md:px-8 py-4">
 
         {/* Logo */}

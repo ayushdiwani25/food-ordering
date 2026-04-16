@@ -122,7 +122,7 @@ export default function ProfilePage() {
                   <div className="flex-1">
                     <h2 className="text-4xl font-bold text-gray-800">{user?.name}</h2>
                     <p className="text-lg text-orange-600 font-semibold mt-2">📧 {user?.email}</p>
-                    <p className="text-sm text-gray-600">👤 Admin Account</p>
+                    <p className="text-sm text-gray-600">👤 {user?.isAdmin ? "👑 Admin Account" : "👤 Regular User"}</p>
                   </div>
                 </div>
 
@@ -130,7 +130,7 @@ export default function ProfilePage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                   <InfoCard icon="📱" label="Phone" value={user?.phone} />
                   <InfoCard icon="📅" label="Member Since" value={user?.memberSince} />
-                  <InfoCard icon="🔐" label="Account Type" value="Admin" />
+                  <InfoCard icon="🔐" label="Account Type" value={user?.isAdmin ? "👑 Admin" : "👤 User"} />
                 </div>
 
                 <button
@@ -224,7 +224,7 @@ export default function ProfilePage() {
             <div className="mb-10 bg-gray-50 p-6 rounded-lg border-2 border-gray-300">
               <h4 className="text-lg font-bold text-gray-800 mb-4">ℹ️ Account Information</h4>
               <p className="text-gray-700"><strong>Email:</strong> {user?.email}</p>
-              <p className="text-gray-700"><strong>Account Type:</strong> Admin</p>
+              <p className="text-gray-700"><strong>Account Type:</strong> {user?.isAdmin ? "👑 Admin" : "👤 User"}</p>
               <p className="text-gray-700"><strong>Member Since:</strong> {user?.memberSince}</p>
             </div>
 
@@ -242,7 +242,7 @@ export default function ProfilePage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleLogout}
-              className="w-full px-8 py-4 bg-linear-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white rounded-lg font-bold text-lg shadow-lg"
+              className="w-full px-8 py-4 bg-linear-to-r from-yellow-500 to-orange-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg font-bold text-lg shadow-lg"
             >
               🚪 Logout
             </motion.button>

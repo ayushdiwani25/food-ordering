@@ -54,9 +54,17 @@ export default function DealsPage() {
                   </div>
                   <button
                     onClick={() => handleCopyPromo(promo.code)}
-                    className="px-4 py-2 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 font-semibold transition"
+                    className="px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-200 font-bold transition flex items-center gap-2"
                   >
-                    {copiedCode === promo.code ? "✓ Copied" : "Copy"}
+                    {copiedCode === promo.code ? (
+                      <>
+                        <span>✓</span> Copied
+                      </>
+                    ) : (
+                      <>
+                         Copy
+                      </>
+                    )}
                   </button>
                 </div>
 

@@ -40,7 +40,7 @@ export default function Footer() {
               <li><Link to="/" className="text-gray-400 hover:text-orange-400">Home</Link></li>
               <li><Link to="/food" className="text-gray-400 hover:text-orange-400">Menu</Link></li>
               <li><Link to="/cart" className="text-gray-400 hover:text-orange-400">Cart</Link></li>
-              <li><a href="#" className="text-gray-400 hover:text-orange-400">Order Status</a></li>
+          
             </ul>
           </div>
 
@@ -49,8 +49,6 @@ export default function Footer() {
             <h3 className="text-lg font-bold text-orange-400 mb-3">Company</h3>
             <ul className="space-y-2 text-sm">
               <li><a href="#" className="text-gray-400 hover:text-orange-400">About Us</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-orange-400">Careers</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-orange-400">Blog</a></li>
               <li><a href="#" className="text-gray-400 hover:text-orange-400">Contact</a></li>
             </ul>
           </div>

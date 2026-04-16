@@ -84,6 +84,7 @@ export const registerUser = (userData) => {
       name: userData.name,
       email: userData.email,
       phone: userData.phone || "",
+      isAdmin: false,  // Regular users are NOT admins
       memberSince: new Date().toLocaleDateString(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
@@ -240,6 +241,11 @@ export const getFavorites = () => {
   }
 };
 
+// Check if a user is admin
+export const isUserAdmin = (user) => {
+  return user && user.isAdmin === true;
+};
+
 export default {
   STORAGE_KEYS,
   registerUser,
@@ -247,6 +253,7 @@ export default {
   getCurrentUser,
   logoutUser,
   isEmailRegistered,
+  isUserAdmin,
   saveAddresses,
   getAddresses,
   saveFavorites,

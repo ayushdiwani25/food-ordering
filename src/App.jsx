@@ -9,13 +9,27 @@ import RestaurantDetailsPage from "./pages/restaurant-details";
 import ProfilePage from "./pages/profile";
 import OrdersPage from "./pages/orders";
 import DealsPage from "./pages/deals";
+import RestaurantAdminPanel from "./pages/admin-panel";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import LoginPage from "./pages/login";
 import SignupPage from "./pages/signup";
 import { restoreUserFromStorage } from "./redux/userSlice";
 import { getCurrentUser, getAddresses, getFavorites, initializeAdminUser } from "./lib/storage";
+
+// Page transition wrapper component
+const PageTransition = ({ children }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    transition={{ duration: 0.4, ease: "easeInOut" }}
+  >
+    {children}
+  </motion.div>
+);
 
 export default function App() {
   const dispatch = useDispatch();
@@ -39,7 +53,6 @@ export default function App() {
           favorites
         })
       );
-      console.log("✅ User restored:", user.email);
     }
   }, [dispatch]);
 
@@ -47,21 +60,106 @@ export default function App() {
     <div className="App">
       <Router>
         <Navbar cartCount={cartItems.reduce((total, item) => total + (item.qty || 1), 0)} />
-
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/restaurants" element={<RestaurantsPage />} />
-          <Route path="/restaurant/:restaurantId" element={<RestaurantDetailsPage />} />
-          <Route path="/food" element={<Food />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/orders" element={<OrdersPage />} />
-          <Route path="/deals" element={<DealsPage />} />
-        </Routes>
-
+        <AnimatePresence mode="wait">
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                <PageTransition>
+                  <Home />
+                </PageTransition>
+              } 
+            />
+            <Route 
+              path="/login" 
+              element={
+                <PageTransition>
+                  <LoginPage />
+                </PageTransition>
+              } 
+            />
+            <Route 
+              path="/signup" 
+              element={
+                <PageTransition>
+                  <SignupPage />
+                </PageTransition>
+              } 
+            />
+            <Route 
+              path="/restaurants" 
+              element={
+                <PageTransition>
+                  <RestaurantsPage />
+                </PageTransition>
+              } 
+            />
+            <Route 
+              path="/restaurant/:restaurantId" 
+              element={
+                <PageTransition>
+                  <RestaurantDetailsPage />
+                </PageTransition>
+              } 
+            />
+            <Route 
+              path="/food" 
+              element={
+                <PageTransition>
+                  <Food />
+                </PageTransition>
+              } 
+            />
+            <Route 
+              path="/cart" 
+              element={
+                <PageTransition>
+                  <Cart />
+                </PageTransition>
+              } 
+            />
+            <Route 
+              path="/checkout" 
+              element={
+                <PageTransition>
+                  <Checkout />
+                </PageTransition>
+              } 
+            />
+            <Route 
+              path="/profile" 
+              element={
+                <PageTransition>
+                  <ProfilePage />
+                </PageTransition>
+              } 
+            />
+            <Route 
+              path="/orders" 
+              element={
+                <PageTransition>
+                  <OrdersPage />
+                </PageTransition>
+              } 
+            />
+            <Route 
+              path="/deals" 
+              element={
+                <PageTransition>
+                  <DealsPage />
+                </PageTransition>
+              } 
+            />
+            <Route 
+              path="/admin/restaurants" 
+              element={
+                <PageTransition>
+                  <RestaurantAdminPanel />
+                </PageTransition>
+              } 
+            />
+          </Routes>
+        </AnimatePresence>
         <Footer />
       </Router>
     </div>

@@ -7,6 +7,7 @@ import { PROMO_CODES } from "../data";
 
 export default function Checkout() {
   const cartItems = useSelector((state) => state.cart || []);
+  const { isLoggedIn } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -102,6 +103,11 @@ export default function Checkout() {
   };
 
   const handlePlaceOrder = () => {
+    if (!isLoggedIn) {
+      alert("Please login first");
+      return;
+    }
+    
     if (!validateForm()) return;
 
     // Create order data for Redux
@@ -120,11 +126,8 @@ export default function Checkout() {
     // Dispatch order to Redux store
     dispatch(placeOrder(orderData));
     
-    // Save to localStorage
-    localStorage.setItem("checkout", JSON.stringify(formData));
+    // Order created and stored in Redux
     
-    console.log("Order placed:", orderData);
-
     setOrderPlaced(true);
     dispatch(clearCart());
 

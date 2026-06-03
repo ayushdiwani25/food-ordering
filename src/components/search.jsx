@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { RESTAURANTS, MENU } from "../data";
 
 export default function SearchComponent({ onSearch }) {
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [results, setResults] = useState(null);
@@ -77,6 +80,13 @@ export default function SearchComponent({ onSearch }) {
     setQuery(item.name);
     setSuggestions([]);
     setShowSuggestions(false);
+    
+    // Navigate to restaurant if it's a restaurant
+    if (activeTab === "restaurants") {
+      navigate(`/restaurant/${item.id}`);
+    }
+    
+    // Call onSearch callback for other handling
     onSearch?.(item, activeTab);
   };
 
@@ -128,10 +138,19 @@ export default function SearchComponent({ onSearch }) {
 
           {/* Suggestions Dropdown */}
           {showSuggestions && suggestions.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-white border-2 border-orange-300 rounded-lg shadow-lg z-20 max-h-64 overflow-y-auto">
-              {suggestions.map((item) => (
-                <div
+            <motion.div 
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-full left-0 right-0 mt-1 bg-white border-2 border-orange-300 rounded-lg shadow-lg z-20 max-h-64 overflow-y-auto"
+            >
+              {suggestions.map((item, index) => (
+                <motion.div
                   key={item.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
                   onClick={() => handleSuggestionClick(item)}
                   className="px-4 py-3 border-b border-gray-100 hover:bg-orange-50 cursor-pointer transition"
                 >
@@ -144,9 +163,9 @@ export default function SearchComponent({ onSearch }) {
                       ? item.cuisines.join(", ")
                       : item.category}
                   </p>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
         </div>
 
@@ -228,17 +247,30 @@ export default function SearchComponent({ onSearch }) {
       )}
 
       {results && (
-        <div className="bg-white border-2 border-gray-200 rounded-lg p-4 max-h-96 overflow-y-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="bg-white border-2 border-gray-200 rounded-lg p-4 max-h-96 overflow-y-auto"
+        >
           {results.data.length > 0 ? (
             <div>
               <p className="font-semibold mb-3">
                 Found {results.data.length} {results.type}
               </p>
-              {results.data.map((item) => (
-                <div
+              {results.data.map((item, index) => (
+                <motion.div
                   key={item.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
                   className="p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition"
-                  onClick={() => onSearch?.(item, results.type)}
+                  onClick={() => {
+                    if (results.type === "restaurants") {
+                      navigate(`/restaurant/${item.id}`);
+                    }
+                    onSearch?.(item, results.type);
+                  }}
                 >
                   <p className="font-semibold text-gray-800">{item.name}</p>
                   <p className="text-sm text-gray-600">
@@ -246,13 +278,19 @@ export default function SearchComponent({ onSearch }) {
                       ? item.cuisines.join(", ")
                       : item.desc}
                   </p>
-                </div>
+                </motion.div>
               ))}
             </div>
           ) : (
-            <p className="text-gray-600 text-center py-4">No results found</p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-gray-600 text-center py-4"
+            >
+              No results found
+            </motion.p>
           )}
-        </div>
+        </motion.div>
       )}
     </div>
   );

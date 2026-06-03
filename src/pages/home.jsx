@@ -1,26 +1,22 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import backgroundImage from "../assets/background.jpg";
-import pizzaImg from "../assets/Margherita-Royale.png";
-import burgerImg from "../assets/Classic-Smash-Burger.png";
-import drinkImg from "../assets/Mango-Chiller.png";
 
 export default function Home() {
   const navigate = useNavigate();
   const [hoveredGallery, setHoveredGallery] = useState(null);
 
   const galleryItems = [
-    { id: 1, label: "Pizza", category: "Pizza", img: pizzaImg },
-    { id: 2, label: "Burger", category: "Burger", img: burgerImg },
-    { id: 3, label: "Cold Drink", category: "Drinks", img: drinkImg },
+    { id: 1, label: "Pizza", category: "Pizza", img: "https://res.cloudinary.com/dyoht5hxt/image/upload/v1780460244/Margherita-Royale_go5p4a.png" },
+    { id: 2, label: "Burger", category: "Burger", img: "https://res.cloudinary.com/dyoht5hxt/image/upload/v1780460238/Classic-Smash-Burger_amwrwx.png" },
+    { id: 3, label: "Cold Drink", category: "Drinks", img: "https://res.cloudinary.com/dyoht5hxt/image/upload/v1780460244/Mango-Chiller_viabwr.png" },
   ];
 
   return (
     <div 
       className="relative min-h-screen bg-cover bg-center bg-no-repeat flex flex-col"
       style={{
-        backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, transparent 100%), url(${backgroundImage})`,
+        backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, transparent 100%), url(https://res.cloudinary.com/dyoht5hxt/image/upload/v1780460184/background_zbrr9a.jpg)`,
         backgroundAttachment: "fixed",
       }}
     >
@@ -167,8 +163,7 @@ export default function Home() {
               animate={{ opacity: hoveredGallery === item.id ? 1 : 0.5 }}
               transition={{ duration: 0.3 }}
             >
-              \<motion.div className="text-center">
-              
+              <motion.div className="text-center">
                 <p className="text-white font-bold text-lg mt-2">{item.label}</p>
               </motion.div>
             </motion.div>
@@ -188,10 +183,10 @@ export default function Home() {
           className="backdrop-blur-sm bg-white/10 rounded-3xl p-8 border-2 border-white/20"
           whileHover={{ borderColor: "rgba(255, 165, 0, 0.5)" }}
         >
-          <h3 className="text-4xl font-bold bg-linear-to-r from-orange-300 to-red-400 bg-clip-text text-transparent mb-6">
+          <h3 className="text-4xl font-bold bg-linear-to-r from-orange-500 to-red-600 bg-clip-text text-transparent mb-6">
             Ready to Order?
           </h3>
-          <p className="text-white/80 text-lg mb-8">
+          <p className="text-orange-400 text-lg mb-8">
             Discover thousands of delicious meals ready to be delivered to your door!
           </p>
           <motion.button

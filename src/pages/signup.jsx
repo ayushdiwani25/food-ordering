@@ -60,7 +60,6 @@ export default function SignupPage() {
     }
 
     // Signup successful
-    console.log("✅ User registered:", result.user.email);
     dispatch(login(result.user));
     setSignupSuccess(true);
 
@@ -169,11 +168,7 @@ export default function SignupPage() {
               </Link>
             </p>
 
-            <div className="mt-6 p-4 bg-green-50 rounded-lg border-2 border-green-200">
-              <p className="text-sm text-green-700 font-semibold">
-                🔒 Your data is stored securely locally
-              </p>
-            </div>
+           
           </CardContent>
         </Card>
       </motion.div>

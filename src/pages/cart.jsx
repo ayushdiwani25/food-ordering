@@ -1,11 +1,22 @@
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, updateQuantity, clearCart } from "../redux/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { MENU } from "../data";
 
 export default function Cart() {
   const cartItems = useSelector((state) => state.cart || []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Helper function to get correct image URL for cart items
+  const getItemImage = (item) => {
+    if (item.img && typeof item.img === 'string' && item.img.includes('cloudinary')) {
+      return item.img;
+    }
+    // Fallback: get image from MENU data
+    const menuItem = MENU.find(m => m.id === item.id);
+    return menuItem?.img || item.img;
+  };
 
   const increaseQty = (id) => {
     const item = cartItems.find((item) => item.id === id);
@@ -55,7 +66,7 @@ export default function Cart() {
                 {/* Image */}
                 <div className="w-full sm:w-28 md:w-32 h-32 sm:h-28 md:h-32 bg-linear-to-br from-orange-100 to-yellow-100 rounded-xl overflow-hidden shrink-0 flex items-center justify-center">
                   <img
-                    src={item.img}
+                    src={getItemImage(item)}
                     alt={item.name}
                     className="w-full h-full object-cover"
                   />
@@ -64,6 +75,12 @@ export default function Cart() {
                 {/* Details */}
                 <div className="flex-1">
                   <h2 className="font-bold text-lg text-gray-800">{item.name}</h2>
+
+                  {item.restaurantName && (
+                    <p className="text-sm text-orange-600 font-semibold mt-1">
+                      🏪 From: {item.restaurantName}
+                    </p>
+                  )}
 
                   <span
                     className={`text-sm inline-block mt-1 ${

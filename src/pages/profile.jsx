@@ -34,15 +34,7 @@ function InfoCard({ icon, label, value }) {
   );
 }
 
-// ===== HELPER: Settings Checkbox =====
-function SettingCheckbox({ icon, label, defaultChecked = true }) {
-  return (
-    <label className="flex items-center p-4 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100 border-2 border-blue-200 transition">
-      <input type="checkbox" defaultChecked={defaultChecked} className="w-5 h-5 text-orange-500 rounded" />
-      <span className="ml-3 font-semibold text-gray-800">{icon} {label}</span>
-    </label>
-  );
-}
+
 
 // ===== MAIN COMPONENT =====
 export default function ProfilePage() {
@@ -210,15 +202,7 @@ export default function ProfilePage() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white rounded-2xl p-8 shadow-md border-2 border-gray-200">
             <h3 className="text-2xl font-bold text-gray-800 mb-8">⚙️ Settings</h3>
 
-            {/* Notifications */}
-            <div className="mb-10">
-              <h4 className="text-lg font-bold text-gray-800 mb-4">🔔 Notifications</h4>
-              <div className="space-y-3">
-                <SettingCheckbox icon="📱" label="Order updates via SMS" />
-                <SettingCheckbox icon="🎉" label="Promotional offers & deals" />
-                <SettingCheckbox icon="💌" label="Newsletter & updates" />
-              </div>
-            </div>
+
 
             {/* Account Info */}
             <div className="mb-10 bg-gray-50 p-6 rounded-lg border-2 border-gray-300">
@@ -228,14 +212,7 @@ export default function ProfilePage() {
               <p className="text-gray-700"><strong>Member Since:</strong> {user?.memberSince}</p>
             </div>
 
-            {/* Security */}
-            <div className="mb-10 bg-yellow-50 p-6 rounded-lg border-2 border-yellow-300">
-              <h4 className="text-lg font-bold text-yellow-800 mb-4">🔐 Security</h4>
-              <p className="text-yellow-700 mb-4">Your data is stored securely in localStorage.</p>
-              <button className="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 font-semibold">
-                🔄 Change Password
-              </button>
-            </div>
+
 
             {/* Logout */}
             <motion.button

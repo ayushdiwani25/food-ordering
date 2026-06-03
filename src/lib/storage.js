@@ -1,6 +1,4 @@
-// ====================================================
-// 🔐 Authentication & Storage - Simple & Secure
-// ====================================================
+
 
 const STORAGE_KEYS = {
   CURRENT_USER: "foodrush_currentUser",
@@ -246,6 +244,95 @@ export const isUserAdmin = (user) => {
   return user && user.isAdmin === true;
 };
 
+// ====== RESTAURANT FUNCTIONS ======
+
+const RESTAURANT_STORAGE_KEY = "foodrush_restaurants";
+const RESTAURANT_ITEMS_PREFIX = "foodrush_restaurant_items_";
+
+// Save all restaurants
+export const saveAllRestaurants = (restaurants) => {
+  try {
+    localStorage.setItem(RESTAURANT_STORAGE_KEY, JSON.stringify(restaurants));
+  } catch (error) {
+    console.error("Error saving restaurants:", error);
+  }
+};
+
+// Get all restaurants
+export const getAllRestaurants = () => {
+  try {
+    const restaurants = localStorage.getItem(RESTAURANT_STORAGE_KEY);
+    return restaurants ? JSON.parse(restaurants) : [];
+  } catch (error) {
+    console.error("Error getting restaurants:", error);
+    return [];
+  }
+};
+
+// Save restaurant items/menu
+export const saveRestaurantItems = (restaurantId, items) => {
+  try {
+    const key = `${RESTAURANT_ITEMS_PREFIX}${restaurantId}`;
+    localStorage.setItem(key, JSON.stringify(items));
+  } catch (error) {
+    console.error("Error saving restaurant items:", error);
+  }
+};
+
+// Get restaurant items/menu
+export const getRestaurantItems = (restaurantId) => {
+  try {
+    const key = `${RESTAURANT_ITEMS_PREFIX}${restaurantId}`;
+    const items = localStorage.getItem(key);
+    return items ? JSON.parse(items) : [];
+  } catch (error) {
+    console.error("Error getting restaurant items:", error);
+    return [];
+  }
+};
+
+// Add or update single item
+export const saveRestaurantItem = (restaurantId, item) => {
+  try {
+    const items = getRestaurantItems(restaurantId);
+    const index = items.findIndex(i => i.id === item.id);
+    if (index !== -1) {
+      items[index] = item;
+    } else {
+      items.push(item);
+    }
+    saveRestaurantItems(restaurantId, items);
+    return true;
+  } catch (error) {
+    console.error("Error saving restaurant item:", error);
+    return false;
+  }
+};
+
+// Delete restaurant item
+export const deleteRestaurantItem = (restaurantId, itemId) => {
+  try {
+    const items = getRestaurantItems(restaurantId);
+    const filtered = items.filter(i => i.id !== itemId);
+    saveRestaurantItems(restaurantId, filtered);
+    return true;
+  } catch (error) {
+    console.error("Error deleting restaurant item:", error);
+    return false;
+  }
+};
+
+// Get restaurant item by ID
+export const getRestaurantItemById = (restaurantId, itemId) => {
+  try {
+    const items = getRestaurantItems(restaurantId);
+    return items.find(i => i.id === itemId) || null;
+  } catch (error) {
+    console.error("Error getting restaurant item:", error);
+    return null;
+  }
+};
+
 export default {
   STORAGE_KEYS,
   registerUser,
@@ -258,5 +345,12 @@ export default {
   getAddresses,
   saveFavorites,
   getFavorites,
-  initializeAdminUser
+  initializeAdminUser,
+  saveAllRestaurants,
+  getAllRestaurants,
+  saveRestaurantItems,
+  getRestaurantItems,
+  saveRestaurantItem,
+  deleteRestaurantItem,
+  getRestaurantItemById
 };

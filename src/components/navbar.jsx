@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { isUserAdmin } from "../lib/storage";
 
 // ===== HELPER: Navigation Links Data =====
 const NAVBAR_LINKS = [
@@ -35,21 +36,32 @@ function NavbarLink({ path, label }) {
 function UserSection({ user, isLoggedIn }) {
   if (isLoggedIn && user) {
     return (
-      <Link
-        to="/profile"
-        className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 hover:bg-white/30 transition transform hover:scale-110 shadow-sm"
-        title={`${user.name} - Click to view profile`}
-      >
-        <motion.div
-          className="w-8 h-8 bg-linear-to-r from-yellow-300 to-orange-400 text-white rounded-full flex items-center justify-center font-bold text-sm"
-          whileHover={{ scale: 1.2 }}
+      <div className="flex items-center gap-2">
+        {isUserAdmin(user) && (
+          <Link
+            to="/admin/restaurants"
+            className="px-3 py-1 rounded-full bg-red-500 hover:bg-red-600 transition text-white text-sm font-semibold hidden md:flex items-center gap-1"
+            title="Admin Panel"
+          >
+            ⚙️ Admin
+          </Link>
+        )}
+        <Link
+          to="/profile"
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 hover:bg-white/30 transition transform hover:scale-110 shadow-sm"
+          title={`${user.name} - Click to view profile`}
         >
-          {user.name?.charAt(0).toUpperCase() || "A"}
-        </motion.div>
-        <span className="text-sm font-semibold hidden md:inline">
-          {user.name?.split(" ")[0]}
-        </span>
-      </Link>
+          <motion.div
+            className="w-8 h-8 bg-linear-to-r from-yellow-300 to-orange-400 text-white rounded-full flex items-center justify-center font-bold text-sm"
+            whileHover={{ scale: 1.2 }}
+          >
+            {user.name?.charAt(0).toUpperCase() || "A"}
+          </motion.div>
+          <span className="text-sm font-semibold hidden md:inline">
+            {user.name?.split(" ")[0]}
+          </span>
+        </Link>
+      </div>
     );
   }
 
@@ -171,22 +183,37 @@ export default function Navbar({ cartCount }) {
             )}
           </Link>
 
-          {/* Orders Icon */}
-           <Link
-             to="/orders"
-             className="p-1.5 md:p-2 rounded-full bg-orange-100 hover:bg-orange-200 transition transform hover:scale-110"
-             title="My Orders"
-           >
-             <svg
-               className="w-5 h-5 md:w-6 md:h-6 text-orange-700"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
+           {/* Orders Icon */}
+            <Link
+              to="/orders"
+              className="p-1.5 md:p-2 rounded-full bg-orange-100 hover:bg-orange-200 transition transform hover:scale-110"
+              title="My Orders"
             >
-              <path d="M9 7h6m0 10v-3m-6 3v-3m-6-4h18a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2z" />
-            </svg>
-          </Link>
+              <motion.svg
+                className="w-5 h-5 md:w-6 md:h-6 text-orange-700"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                animate={{ x: [0, 2, -2, 0] }}
+                transition={{ 
+                  duration: 1.2, 
+                  repeat: Infinity, 
+                  repeatDelay: 4,
+                  ease: "easeInOut"
+                }}
+                whileHover={{ rotate: -5 }}
+              >
+                {/* Delivery Scooter Creative Icon */}
+                <path d="M15 10h4l3 4v2h-6v-2l-2-4z" />
+                <circle cx="17" cy="17" r="2" />
+                <circle cx="7" cy="17" r="2" />
+                <path d="M3 17v-5l4-4h6l1 2h3" />
+                <path d="M8 13h5" />
+                <circle cx="13" cy="7" r="1" />
+                <path d="M10 17h6" />
+              </motion.svg>
+            </Link>
 
           {/* User Section */}
           <UserSection user={user} isLoggedIn={isLoggedIn} />
@@ -219,6 +246,21 @@ export default function Navbar({ cartCount }) {
                   </NavLink>
                 </li>
               ))}
+              {isLoggedIn && user && isUserAdmin(user) && (
+                <li>
+                  <NavLink
+                    to="/admin/restaurants"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `block px-4 py-3 rounded-lg font-semibold transition-all ${
+                        isActive ? "bg-red-600 text-white" : "text-white/90 hover:bg-red-500"
+                      }`
+                    }
+                  >
+                    ⚙️ Admin Panel
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </motion.div>
         )}

@@ -10,19 +10,19 @@ export default function AddressManagement() {
     label: "",
     street: "",
     city: "",
-    zipCode: "",
+    pinCode: "",
     phone: ""
   });
 
   const handleAddAddress = () => {
-    if (formData.label && formData.street && formData.city && formData.zipCode) {
+    if (formData.label && formData.street && formData.city && formData.pinCode) {
       dispatch(
         addAddress({
           id: Date.now(),
           ...formData
         })
       );
-      setFormData({ label: "", street: "", city: "", zipCode: "", phone: "" });
+      setFormData({ label: "", street: "", city: "", pinCode: "", phone: "" });
       setShowForm(false);
     }
   };
@@ -48,7 +48,7 @@ export default function AddressManagement() {
                 <div>
                   <p className="font-semibold text-gray-800">{address.label}</p>
                   <p className="text-sm text-gray-600">
-                    {address.street}, {address.city} - {address.zipCode}
+                    {address.street}, {address.city} - {address.pinCode}
                   </p>
                   <p className="text-sm text-gray-600">{address.phone}</p>
                 </div>
@@ -106,10 +106,10 @@ export default function AddressManagement() {
             />
             <input
               type="text"
-              placeholder="Zip Code"
-              value={formData.zipCode}
+              placeholder="Pin Code"
+              value={formData.pinCode}
               onChange={(e) =>
-                setFormData({ ...formData, zipCode: e.target.value })
+                setFormData({ ...formData, pinCode: e.target.value })
               }
               className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             />

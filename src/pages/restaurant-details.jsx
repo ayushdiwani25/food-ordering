@@ -37,15 +37,15 @@ export default function RestaurantDetailsPage() {
     // Only allow adding once per click session, prevent spamming
     if (!addedItems[item.id]) {
       if (existingItem) {
-        dispatch(addToCart({ ...item, qty: existingItem.qty + 1 }));
+        dispatch(addToCart({ ...item, restaurantName: restaurant.name, restaurantId: restaurant.id, qty: existingItem.qty + 1 }));
       } else {
-        dispatch(addToCart({ ...item, qty: 1 }));
+        dispatch(addToCart({ ...item, restaurantName: restaurant.name, restaurantId: restaurant.id, qty: 1 }));
       }
 
       // Show animation feedback & lock button temporarily
-      setAddedItems({ ...addedItems, [item.id]: true });
+      setAddedItems(prev => ({ ...prev, [item.id]: true }));
       setTimeout(() => {
-        setAddedItems({ ...addedItems, [item.id]: false });
+        setAddedItems(prev => ({ ...prev, [item.id]: false }));
       }, 1500);
     }
   };

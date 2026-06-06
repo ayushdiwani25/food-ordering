@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { RESTAURANTS, MENU } from "../data";
 import { addFavoriteRestaurant } from "../redux/favoritesSlice";
 import { addToCart } from "../redux/cartSlice";
@@ -63,6 +63,7 @@ export default function RestaurantDetailsPage() {
 
         {/* Back Button */}
         <button
+          type="button"
           onClick={() => navigate("/restaurants")}
           className="absolute top-4 left-4 bg-white text-gray-800 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100"
         >
@@ -113,6 +114,7 @@ export default function RestaurantDetailsPage() {
             </div>
 
             <button
+              type="button"
               onClick={() => {
                 setIsFavorite(!isFavorite);
                 dispatch(addFavoriteRestaurant(restaurant));
@@ -142,6 +144,7 @@ export default function RestaurantDetailsPage() {
           <div className="flex gap-3 pb-2">
             {uniqueCategories.map(category => (
               <button
+                type="button"
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 className={`px-6 py-3 rounded-full font-semibold whitespace-nowrap transition ${
@@ -159,7 +162,7 @@ export default function RestaurantDetailsPage() {
         {/* Menu Items Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredMenu.map((item, index) => (
-            <motion.div
+            <m.div
               key={item.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -206,6 +209,7 @@ export default function RestaurantDetailsPage() {
                 </div>
 
                 <button
+                  type="button"
                   onClick={() => handleAddToCart(item)}
                   disabled={addedItems[item.id]}
                   className={`w-full px-4 py-3 rounded-lg font-semibold transition ${
@@ -217,7 +221,7 @@ export default function RestaurantDetailsPage() {
                   {addedItems[item.id] ? "Added!" : "Add to Cart"}
                 </button>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

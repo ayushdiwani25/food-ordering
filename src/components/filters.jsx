@@ -117,6 +117,7 @@ export default function FilterComponent({ onFilterChange }) {
       </div>
 
       <button
+        type="button"
         onClick={() => {
           setFilters({
             veg: false,

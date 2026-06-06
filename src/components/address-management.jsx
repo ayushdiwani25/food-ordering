@@ -53,6 +53,7 @@ export default function AddressManagement() {
                   <p className="text-sm text-gray-600">{address.phone}</p>
                 </div>
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     dispatch(deleteAddress(address.id));
@@ -72,6 +73,7 @@ export default function AddressManagement() {
       {/* Add Address Form */}
       {!showForm ? (
         <button
+          type="button"
           onClick={() => setShowForm(true)}
           className="w-full px-4 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold"
         >
@@ -123,12 +125,14 @@ export default function AddressManagement() {
           />
           <div className="flex gap-2">
             <button
+              type="submit"
               onClick={handleAddAddress}
               className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold"
             >
               Save Address
             </button>
             <button
+              type="button"
               onClick={() => setShowForm(false)}
               className="flex-1 px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 font-semibold"
             >

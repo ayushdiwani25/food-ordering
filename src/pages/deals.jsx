@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { DEALS, PROMO_CODES, RESTAURANTS } from "../data";
 
 export default function DealsPage() {
@@ -17,7 +17,7 @@ export default function DealsPage() {
     <div className="min-h-screen bg-linear-to-b from-orange-50 to-white py-8 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-12"
@@ -28,10 +28,10 @@ export default function DealsPage() {
           <p className="text-gray-600 text-lg">
             Save big on your favorite restaurants and dishes
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Promo Codes Section */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -42,7 +42,7 @@ export default function DealsPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {PROMO_CODES.map(promo => (
-              <motion.div
+              <m.div
                 key={promo.code}
                 whileHover={{ scale: 1.02 }}
                 className="bg-linear-to-r from-purple-500 to-pink-500 rounded-2xl p-6 text-white shadow-lg"
@@ -53,6 +53,7 @@ export default function DealsPage() {
                     <p className="text-3xl font-bold">{promo.code}</p>
                   </div>
                   <button
+                    type="button"
                     onClick={() => handleCopyPromo(promo.code)}
                     className="px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-gray-200 font-bold transition flex items-center gap-2"
                   >
@@ -75,13 +76,13 @@ export default function DealsPage() {
                 <p className="text-xs opacity-75">
                   Min. order: ₹{promo.minOrder}
                 </p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Restaurant Deals */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -96,7 +97,7 @@ export default function DealsPage() {
                 r => r.id === deal.restaurantId
               );
               return (
-                <motion.div
+                <m.div
                   key={deal.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -131,19 +132,19 @@ export default function DealsPage() {
                       <span className="text-xs text-gray-500">
                         {deal.validTill}
                       </span>
-                      <button className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold text-sm">
+                      <button type="button" className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold text-sm">
                         Order Now
                       </button>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               );
             })}
           </div>
-        </motion.div>
+        </m.div>
 
         {/* How to Use */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
@@ -181,7 +182,7 @@ export default function DealsPage() {
               </p>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   );

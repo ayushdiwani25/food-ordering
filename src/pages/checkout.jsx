@@ -166,6 +166,7 @@ export default function Checkout() {
               Your cart is empty. Please add items before checking out.
             </p>
             <button
+              type="button"
               onClick={() => navigate("/food")}
               className="mt-6 bg-orange-500 text-white px-6 py-3 rounded-xl hover:bg-orange-600 transition"
             >
@@ -360,6 +361,7 @@ export default function Checkout() {
                       <p className="text-xs text-green-600">-₹{appliedPromo.discount}</p>
                     </div>
                     <button
+                      type="button"
                       onClick={handleRemovePromo}
                       className="text-red-600 hover:text-red-800 font-bold"
                     >
@@ -379,6 +381,7 @@ export default function Checkout() {
                       className="flex-1 px-2 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
                     <button
+                      type="button"
                       onClick={handleApplyPromo}
                       className="px-3 py-2 bg-orange-500 text-white text-sm font-semibold rounded-lg hover:bg-orange-600 transition"
                     >
@@ -438,6 +441,7 @@ export default function Checkout() {
 
               {/* Place Order Button */}
               <button
+                type="button"
                 onClick={handlePlaceOrder}
                 className="w-full bg-linear-to-r from-orange-500 to-red-500 
                 hover:from-orange-600 hover:to-red-600 text-white py-3 rounded-xl 
@@ -447,6 +451,7 @@ export default function Checkout() {
               </button>
 
               <button
+                type="button"
                 onClick={() => navigate("/cart")}
                 className="w-full mt-3 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-xl 
                 font-semibold transition"

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { RESTAURANTS, MENU } from "../data";
 
 export default function SearchComponent({ onSearch }) {
@@ -138,7 +138,7 @@ export default function SearchComponent({ onSearch }) {
 
           {/* Suggestions Dropdown */}
           {showSuggestions && suggestions.length > 0 && (
-            <motion.div 
+            <m.div 
               initial={{ opacity: 0, y: -10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -146,7 +146,7 @@ export default function SearchComponent({ onSearch }) {
               className="absolute top-full left-0 right-0 mt-1 bg-white border-2 border-orange-300 rounded-lg shadow-lg z-20 max-h-64 overflow-y-auto"
             >
               {suggestions.map((item, index) => (
-                <motion.div
+                <m.div
                   key={item.id}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -163,13 +163,14 @@ export default function SearchComponent({ onSearch }) {
                       ? item.cuisines.join(", ")
                       : item.category}
                   </p>
-                </motion.div>
+                </m.div>
               ))}
-            </motion.div>
+            </m.div>
           )}
         </div>
 
         <button
+          type="button"
           onClick={handleSearch}
           className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold transition"
         >
@@ -179,6 +180,7 @@ export default function SearchComponent({ onSearch }) {
 
       <div className="flex gap-2 mb-4">
         <button
+          type="button"
           onClick={() => {
             setActiveTab("restaurants");
             setResults(null);
@@ -194,6 +196,7 @@ export default function SearchComponent({ onSearch }) {
           Restaurants
         </button>
         <button
+          type="button"
           onClick={() => {
             setActiveTab("items");
             setResults(null);
@@ -214,6 +217,7 @@ export default function SearchComponent({ onSearch }) {
       {activeTab === "restaurants" && (
         <div className="flex gap-2 mb-4">
           <button
+            type="button"
             onClick={() => setVegFilter("all")}
             className={`px-4 py-2 rounded-lg font-semibold transition ${
               vegFilter === "all"
@@ -224,6 +228,7 @@ export default function SearchComponent({ onSearch }) {
             🍽️ All
           </button>
           <button
+            type="button"
             onClick={() => setVegFilter("veg")}
             className={`px-4 py-2 rounded-lg font-semibold transition ${
               vegFilter === "veg"
@@ -234,6 +239,7 @@ export default function SearchComponent({ onSearch }) {
             🥬 Veg Only
           </button>
           <button
+            type="button"
             onClick={() => setVegFilter("nonveg")}
             className={`px-4 py-2 rounded-lg font-semibold transition ${
               vegFilter === "nonveg"
@@ -247,7 +253,7 @@ export default function SearchComponent({ onSearch }) {
       )}
 
       {results && (
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
@@ -259,7 +265,7 @@ export default function SearchComponent({ onSearch }) {
                 Found {results.data.length} {results.type}
               </p>
               {results.data.map((item, index) => (
-                <motion.div
+                <m.div
                   key={item.id}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -278,19 +284,19 @@ export default function SearchComponent({ onSearch }) {
                       ? item.cuisines.join(", ")
                       : item.desc}
                   </p>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           ) : (
-            <motion.p
+            <m.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="text-gray-600 text-center py-4"
             >
               No results found
-            </motion.p>
+            </m.p>
           )}
-        </motion.div>
+        </m.div>
       )}
     </div>
   );

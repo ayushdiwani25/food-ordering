@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { isUserAdmin } from "../lib/storage";
 
 // ===== HELPER: Navigation Links Data =====
@@ -24,9 +24,9 @@ function NavbarLink({ path, label }) {
           }`
         }
       >
-        <motion.span whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+        <m.span whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
           {label}
-        </motion.span>
+        </m.span>
       </NavLink>
     </li>
   );
@@ -51,12 +51,12 @@ function UserSection({ user, isLoggedIn }) {
           className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 hover:bg-white/30 transition transform hover:scale-110 shadow-sm"
           title={`${user.name} - Click to view profile`}
         >
-          <motion.div
+          <m.div
             className="w-8 h-8 bg-linear-to-r from-yellow-300 to-orange-400 text-white rounded-full flex items-center justify-center font-bold text-sm"
             whileHover={{ scale: 1.2 }}
           >
             {user.name?.charAt(0).toUpperCase() || "A"}
-          </motion.div>
+          </m.div>
           <span className="text-sm font-semibold hidden md:inline">
             {user.name?.split(" ")[0]}
           </span>
@@ -120,20 +120,20 @@ export default function Navbar({ cartCount }) {
       <div className="flex items-center justify-between px-4 md:px-8 py-4">
 
         {/* Logo */}
-         <motion.div
+         <m.div
            className="flex items-center gap-2 md:gap-3"
            whileHover={{ scale: 1.05 }}
            whileTap={{ scale: 0.95 }}
          >
-           <motion.img
+           <m.img
              src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png"
              alt="logo"
              className="w-8 h-8 md:w-12 md:h-12"
              animate={{ rotate: [0, 5, -5, 0] }}
              transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
            />
-           <motion.h1 className="text-xl md:text-3xl font-black">FoodRush</motion.h1>
-         </motion.div>
+           <m.h1 className="text-xl md:text-3xl font-black">FoodRush</m.h1>
+         </m.div>
 
         {/* Desktop Navigation Links */}
         <ul className="hidden md:flex gap-8">
@@ -144,6 +144,7 @@ export default function Navbar({ cartCount }) {
 
         {/* Mobile Menu Toggle */}
         <button
+          type="button"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="md:hidden p-2 rounded-full bg-white/20 hover:bg-white/30 transition"
           aria-label="Toggle mobile menu"
@@ -189,7 +190,7 @@ export default function Navbar({ cartCount }) {
               className="p-1.5 md:p-2 rounded-full bg-orange-100 hover:bg-orange-200 transition transform hover:scale-110"
               title="My Orders"
             >
-              <motion.svg
+              <m.svg
                 className="w-5 h-5 md:w-6 md:h-6 text-orange-700"
                 fill="none"
                 stroke="currentColor"
@@ -212,7 +213,7 @@ export default function Navbar({ cartCount }) {
                 <path d="M8 13h5" />
                 <circle cx="13" cy="7" r="1" />
                 <path d="M10 17h6" />
-              </motion.svg>
+              </m.svg>
             </Link>
 
           {/* User Section */}
@@ -224,7 +225,7 @@ export default function Navbar({ cartCount }) {
       {/* Mobile Menu Dropdown */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
@@ -262,7 +263,7 @@ export default function Navbar({ cartCount }) {
                 </li>
               )}
             </ul>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </nav>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -71,7 +71,7 @@ export default function SignupPage() {
   if (signupSuccess) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-purple-500 via-pink-500 to-red-500 p-4">
-        <motion.div
+        <m.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           className="bg-white p-8 rounded-2xl shadow-2xl text-center"
@@ -79,14 +79,14 @@ export default function SignupPage() {
           <div className="text-6xl mb-4 animate-bounce">✨</div>
           <h2 className="text-3xl font-bold text-green-600 mb-2">Account Created!</h2>
           <p className="text-gray-600">Loading your profile...</p>
-        </motion.div>
+        </m.div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-yellow-200 via-orange-300 to-red-300 p-4">
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -171,7 +171,7 @@ export default function SignupPage() {
            
           </CardContent>
         </Card>
-      </motion.div>
+      </m.div>
     </div>
   );
 }

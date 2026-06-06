@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { RESTAURANTS, MENU } from "../data";
 import { setCurrentRestaurant, loadRestaurantItems, addItem, updateItem, deleteItem } from "../redux/restaurantSlice";
 import { getRestaurantItems } from "../lib/storage";
@@ -153,14 +153,14 @@ export default function RestaurantAdminPanel() {
     <div className="min-h-screen bg-gray-100 pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
           <h1 className="text-4xl font-bold text-gray-800 mb-2">🍽️ Restaurant Admin Panel</h1>
           <p className="text-gray-600">Manage your restaurant menu items</p>
-        </motion.div>
+        </m.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Sidebar - Restaurant Selection */}
@@ -169,6 +169,7 @@ export default function RestaurantAdminPanel() {
             <div className="space-y-2">
               {RESTAURANTS.map(restaurant => (
                 <button
+                  type="button"
                   key={restaurant.id}
                   onClick={() => handleSelectRestaurant(restaurant)}
                   className={`w-full text-left p-3 rounded-lg transition font-medium ${
@@ -188,7 +189,7 @@ export default function RestaurantAdminPanel() {
             {selectedRestaurant ? (
               <>
                 {/* Restaurant Info Card */}
-                <motion.div
+                <m.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="bg-white rounded-lg shadow-md p-6 mb-6"
@@ -206,7 +207,7 @@ export default function RestaurantAdminPanel() {
                       <p className="text-gray-600">Menu Items: {items.length}</p>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
 
                 {/* Search and Filter */}
                 <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -228,6 +229,7 @@ export default function RestaurantAdminPanel() {
                       ))}
                     </select>
                     <button
+                      type="button"
                       onClick={() => setShowAddForm(!showAddForm)}
                       className="px-6 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition"
                     >
@@ -238,7 +240,7 @@ export default function RestaurantAdminPanel() {
 
                 {/* Add/Edit Form */}
                 {showAddForm && (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white rounded-lg shadow-md p-6 mb-6 border-2 border-orange-500"
@@ -354,7 +356,7 @@ export default function RestaurantAdminPanel() {
                         </button>
                       </div>
                     </form>
-                  </motion.div>
+                  </m.div>
                 )}
 
                 {/* Items List */}
@@ -380,7 +382,7 @@ export default function RestaurantAdminPanel() {
                         </thead>
                         <tbody>
                           {filteredItems.map((item, index) => (
-                            <motion.tr
+                            <m.tr
                               key={item.id}
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
@@ -418,19 +420,21 @@ export default function RestaurantAdminPanel() {
                               </td>
                               <td className="px-6 py-4 flex gap-2">
                                 <button
+                                  type="button"
                                   onClick={() => handleEditItem(item)}
                                   className="px-3 py-1 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition"
                                 >
                                   ✏️ Edit
                                 </button>
                                 <button
+                                  type="button"
                                   onClick={() => handleDeleteItem(item.id)}
                                   className="px-3 py-1 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600 transition"
                                 >
                                   🗑️ Delete
                                 </button>
                               </td>
-                            </motion.tr>
+                            </m.tr>
                           ))}
                         </tbody>
                       </table>

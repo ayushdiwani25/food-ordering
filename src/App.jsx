@@ -11,7 +11,7 @@ import OrdersPage from "./pages/orders";
 import DealsPage from "./pages/deals";
 import RestaurantAdminPanel from "./pages/admin-panel";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig, LazyMotion, m, domAnimation } from "framer-motion";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import LoginPage from "./pages/login";
@@ -21,14 +21,14 @@ import { getCurrentUser, getAddresses, getFavorites, initializeAdminUser } from 
 
 // Page transition wrapper component
 const PageTransition = ({ children }) => (
-  <motion.div
+  <m.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: -20 }}
     transition={{ duration: 0.4, ease: "easeInOut" }}
   >
     {children}
-  </motion.div>
+  </m.div>
 );
 
 export default function App() {
@@ -58,9 +58,11 @@ export default function App() {
 
   return (
     <div className="App">
-      <Router>
-        <Navbar cartCount={cartItems.reduce((total, item) => total + (item.qty || 1), 0)} />
-        <AnimatePresence mode="wait">
+      <MotionConfig reducedMotion="user">
+        <LazyMotion features={domAnimation}>
+          <Router>
+            <Navbar cartCount={cartItems.reduce((total, item) => total + (item.qty || 1), 0)} />
+            <AnimatePresence mode="wait">
           <Routes>
             <Route 
               path="/" 
@@ -159,9 +161,11 @@ export default function App() {
               } 
             />
           </Routes>
-        </AnimatePresence>
-        <Footer />
-      </Router>
+            </AnimatePresence>
+            <Footer />
+          </Router>
+        </LazyMotion>
+      </MotionConfig>
     </div>
   );
 }

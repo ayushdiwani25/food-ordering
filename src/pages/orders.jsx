@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { expireActiveOrders, cancelOrder } from "../redux/orderSlice";
 
 export default function OrdersPage() {
@@ -35,6 +35,7 @@ export default function OrdersPage() {
             Please login to view your orders
           </p>
           <button
+            type="button"
             onClick={() => navigate("/login")}
             className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold"
           >
@@ -108,18 +109,19 @@ export default function OrdersPage() {
     <div className="min-h-screen bg-gray-50 py-8 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
           <h1 className="text-4xl font-bold text-gray-800">My Orders</h1>
           <p className="text-gray-600 mt-2">Track and manage your all orders</p>
-        </motion.div>
+        </m.div>
 
         {/* Tabs */}
         <div className="flex gap-4 mb-8 border-b-2 border-gray-300">
           <button
+            type="button"
             onClick={() => setActiveTab("active")}
             className={`px-6 py-4 font-semibold transition border-b-4 ${
               activeTab === "active"
@@ -130,6 +132,7 @@ export default function OrdersPage() {
             Active ({activeOrders.length})
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab("completed")}
             className={`px-6 py-4 font-semibold transition border-b-4 ${
               activeTab === "completed"
@@ -140,6 +143,7 @@ export default function OrdersPage() {
             Completed ({completedOrders.length})
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab("cancelled")}
             className={`px-6 py-4 font-semibold transition border-b-4 ${
               activeTab === "cancelled"
@@ -157,7 +161,7 @@ export default function OrdersPage() {
             displayOrders.map((order, index) => {
               const timeRemaining = getTimeRemaining(order.activeExpireTime);
               return (
-              <motion.div
+              <m.div
                 key={order.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -227,18 +231,20 @@ export default function OrdersPage() {
 
                 <div className="flex gap-3">
                   <button 
+                    type="button"
                     onClick={() => handleViewDetails(order)}
                     className="flex-1 px-4 py-2 bg-orange-100 text-orange-600 rounded-lg hover:bg-orange-200 font-semibold"
                   >
                     View Details
                   </button>
                   {order.status === "Delivered" && !order.review && (
-                    <button className="flex-1 px-4 py-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 font-semibold">
+                    <button type="button" className="flex-1 px-4 py-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 font-semibold">
                       Write Review
                     </button>
                   )}
                   {order.status === "Confirmed" && (
                     <button 
+                      type="button"
                       onClick={() => handleCancelOrder(order.id)}
                       className="flex-1 px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 font-semibold"
                     >
@@ -246,11 +252,11 @@ export default function OrdersPage() {
                     </button>
                   )}
                 </div>
-              </motion.div>
+              </m.div>
             );
             })
           ) : (
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="text-center py-12 bg-white rounded-lg border border-gray-200"
@@ -263,19 +269,20 @@ export default function OrdersPage() {
                     : "No cancelled orders"}
               </p>
               <button
+                type="button"
                 onClick={() => navigate("/restaurants")}
                 className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold"
               >
                 Start Ordering
               </button>
-            </motion.div>
+            </m.div>
           )}
         </div>
 
         {/* Order Details Modal */}
         {selectedOrder && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <motion.div
+            <m.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-96 overflow-y-auto"
@@ -287,6 +294,7 @@ export default function OrdersPage() {
                     <p className="text-gray-600 mt-1">Order ID: {selectedOrder.id}</p>
                   </div>
                   <button
+                    type="button"
                     onClick={closeModal}
                     className="text-gray-500 hover:text-gray-700 text-2xl"
                   >
@@ -344,13 +352,14 @@ export default function OrdersPage() {
                 </div>
 
                 <button
+                  type="button"
                   onClick={closeModal}
                   className="w-full px-4 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold"
                 >
                   Close
                 </button>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         )}
       </div>

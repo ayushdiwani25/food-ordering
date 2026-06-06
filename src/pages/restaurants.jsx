@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { RESTAURANTS, DEALS } from "../data";
 import SearchComponent from "../components/search";
 
@@ -30,7 +30,7 @@ export default function RestaurantsPage() {
     <div className="min-h-screen bg-linear-to-b from-orange-50 to-white py-8 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
@@ -41,7 +41,7 @@ export default function RestaurantsPage() {
           <p className="text-gray-600 text-lg">
             Discover the best restaurants and cuisines near you
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Search */}
         <div className="mb-8">
@@ -49,7 +49,7 @@ export default function RestaurantsPage() {
         </div>
 
         {/* Deals Section */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -71,13 +71,13 @@ export default function RestaurantsPage() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
 
          {/* Restaurants Grid */}
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
            {filteredRestaurants.length > 0 ? (
              filteredRestaurants.map((restaurant, index) => (
-            <motion.div
+            <m.div
               key={restaurant.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -119,24 +119,25 @@ export default function RestaurantsPage() {
                   </div>
                 )}
               </div>
-               </motion.div>
+            </m.div>
              ))
            ) : (
-             <motion.div
+             <m.div
                initial={{ opacity: 0 }}
                animate={{ opacity: 1 }}
                className="col-span-full text-center py-16"
              >
-               <p className="text-2xl text-gray-600 font-bold mb-4">
-                 No restaurants found for "{searchQuery}"
-               </p>
-               <button
-                 onClick={() => setSearchQuery("")}
-                 className="px-6 py-2 bg-orange-500 text-white rounded-full font-bold hover:bg-orange-600"
+                <p className="text-2xl text-gray-600 font-bold mb-4">
+                  No restaurants found for "{searchQuery}"
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="px-6 py-2 bg-orange-500 text-white rounded-full font-bold hover:bg-orange-600"
                >
                  Clear Search
                </button>
-             </motion.div>
+             </m.div>
            )}
          </div>
       </div>

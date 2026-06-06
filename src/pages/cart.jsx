@@ -97,8 +97,9 @@ export default function Cart() {
                   {/* Quantity Controls */}
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-4">
                     <button
+                      type="button"
                       onClick={() => decreaseQty(item.id)}
-                      className="bg-orange-100 text-orange-600 px-3 py-2 rounded-lg hover:bg-orange-200 font-bold min-w-[40px]"
+                      className="bg-orange-100 text-orange-600 px-3 py-2 rounded-lg hover:bg-orange-200 font-bold min-w-40px"
                     >
                       −
                     </button>
@@ -106,13 +107,15 @@ export default function Cart() {
                     <span className="font-bold px-4 text-lg">{item.qty}</span>
 
                     <button
+                      type="button"
                       onClick={() => increaseQty(item.id)}
-                      className="bg-orange-100 text-orange-600 px-3 py-2 rounded-lg hover:bg-orange-200 font-bold min-w-[40px]"
+                      className="bg-orange-100 text-orange-600 px-3 py-2 rounded-lg hover:bg-orange-200 font-bold min-w-10"
                     >
                       +
                     </button>
 
                     <button
+                      type="button"
                       onClick={() => removeItem(item.id)}
                       className="ml-auto bg-red-100 text-red-600 px-3 py-2 rounded-lg hover:bg-red-200 font-semibold w-full sm:w-auto mt-2 sm:mt-0"
                     >
@@ -152,6 +155,7 @@ export default function Cart() {
             </div>
 
             <button
+              type="button"
               onClick={() => navigate("/checkout")}
               className="w-full bg-linear-to-r from-orange-500 to-red-500 
               hover:from-orange-600 hover:to-red-600 text-white py-3 rounded-xl 

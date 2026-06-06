@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout, updateProfile } from "../redux/userSlice";
 import AddressManagement from "../components/address-management";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 // ===== HELPER: Tab Button =====
 function TabButton({ active, label, onClick }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       className={`px-6 py-4 font-semibold border-b-4 transition ${
         active
@@ -24,13 +25,13 @@ function TabButton({ active, label, onClick }) {
 // ===== HELPER: Profile Info Card =====
 function InfoCard({ icon, label, value }) {
   return (
-    <motion.div
+    <m.div
       whileHover={{ scale: 1.05 }}
       className="bg-white rounded-lg p-5 shadow-md border-2 border-gray-200"
     >
       <p className="text-gray-600 text-sm font-semibold mb-2">{icon} {label}</p>
       <p className="text-xl font-bold text-gray-800">{value || "Not added"}</p>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -49,7 +50,7 @@ export default function ProfilePage() {
   if (!isLoggedIn || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           className="text-center bg-white p-8 rounded-2xl shadow-lg border-2 border-orange-200"
@@ -57,12 +58,13 @@ export default function ProfilePage() {
           <p className="text-6xl mb-4">🔐</p>
           <p className="text-2xl font-bold text-gray-800 mb-4">Please login to view your profile</p>
           <button
+            type="button"
             onClick={() => navigate("/login")}
             className="px-8 py-3 bg-linear-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 font-semibold"
           >
             Go to Login
           </button>
-        </motion.div>
+        </m.div>
       </div>
     );
   }
@@ -82,10 +84,10 @@ export default function ProfilePage() {
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+        <m.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-4xl font-bold text-gray-800">My Profile</h1>
           <p className="text-gray-600 mt-2">Manage your account and preferences</p>
-        </motion.div>
+        </m.div>
 
         {/* Tab Navigation */}
         <div className="flex gap-4 mb-8 border-b-2 border-gray-300">
@@ -96,7 +98,7 @@ export default function ProfilePage() {
 
         {/* PROFILE TAB */}
         {activeTab === "profile" && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="bg-linear-to-r from-orange-50 to-red-50 rounded-2xl p-8 shadow-lg border-2 border-orange-200"
@@ -105,12 +107,12 @@ export default function ProfilePage() {
               <div>
                 {/* User Header */}
                 <div className="flex items-center gap-6 mb-8 pb-8 border-b-2 border-orange-300">
-                  <motion.div
+                  <m.div
                     whileHover={{ scale: 1.1 }}
                     className="w-24 h-24 bg-linear-to-r from-orange-400 to-red-400 text-white rounded-full flex items-center justify-center text-5xl font-bold shadow-lg"
                   >
                     {user?.name?.charAt(0).toUpperCase()}
-                  </motion.div>
+                  </m.div>
                   <div className="flex-1">
                     <h2 className="text-4xl font-bold text-gray-800">{user?.name}</h2>
                     <p className="text-lg text-orange-600 font-semibold mt-2">📧 {user?.email}</p>
@@ -126,6 +128,7 @@ export default function ProfilePage() {
                 </div>
 
                 <button
+                  type="button"
                   onClick={() => {
                     setEditData(user);
                     setIsEditing(true);
@@ -173,12 +176,14 @@ export default function ProfilePage() {
 
                 <div className="flex gap-4">
                   <button
+                    type="button"
                     onClick={handleSave}
                     className="flex-1 px-6 py-3 bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg font-bold"
                   >
                     💾 Save Changes
                   </button>
                   <button
+                    type="button"
                     onClick={() => setIsEditing(false)}
                     className="flex-1 px-6 py-3 bg-gray-400 hover:bg-gray-500 text-white rounded-lg font-bold"
                   >
@@ -187,19 +192,19 @@ export default function ProfilePage() {
                 </div>
               </div>
             )}
-          </motion.div>
+          </m.div>
         )}
 
         {/* ADDRESSES TAB */}
         {activeTab === "addresses" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <AddressManagement />
-          </motion.div>
+          </m.div>
         )}
 
         {/* SETTINGS TAB */}
         {activeTab === "settings" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white rounded-2xl p-8 shadow-md border-2 border-gray-200">
+          <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white rounded-2xl p-8 shadow-md border-2 border-gray-200">
             <h3 className="text-2xl font-bold text-gray-800 mb-8">⚙️ Settings</h3>
 
 
@@ -215,15 +220,16 @@ export default function ProfilePage() {
 
 
             {/* Logout */}
-            <motion.button
+            <m.button
+              type="button"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleLogout}
               className="w-full px-8 py-4 bg-linear-to-r from-yellow-500 to-orange-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg font-bold text-lg shadow-lg"
             >
               🚪 Logout
-            </motion.button>
-          </motion.div>
+            </m.button>
+          </m.div>
         )}
 
       </div>

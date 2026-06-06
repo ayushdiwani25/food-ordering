@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import { MENU, RESTAURANTS } from "../data";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -73,7 +73,7 @@ export default function Food() {
   return (
     <div className="min-h-screen bg-linear-to-br from-orange-50 via-yellow-50 to-red-100">
       {/* Header */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -85,10 +85,10 @@ export default function Food() {
         <p className="text-lg text-gray-700 font-medium max-w-2xl mx-auto">
           Choose from our handpicked selection of mouth-watering dishes
         </p>
-      </motion.div>
+      </m.div>
 
       {/* Search Bar */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
@@ -102,46 +102,46 @@ export default function Food() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full px-6 py-4 pl-12 bg-white border-2 border-orange-300 rounded-full shadow-lg focus:outline-none focus:border-orange-500 transition-all duration-300 text-gray-700 font-medium"
           />
-          <motion.div
+          <m.div
             className="absolute left-4 top-4 text-xl"
             animate={{ rotate: searchQuery ? 0 : [0, 360] }}
             transition={{ duration: 0.6 }}
           >
             🔍
-          </motion.div>
+          </m.div>
           
           {searchQuery && (
-            <motion.button
+            <m.button
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               onClick={() => setSearchQuery("")}
               className="absolute right-4 top-4 text-xl hover:scale-125 transition-transform"
             >
               ✕
-            </motion.button>
+            </m.button>
           )}
         </div>
         
         {searchQuery && (
-          <motion.p
+          <m.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="text-sm text-orange-600 font-semibold mt-2 px-2"
           >
             Found {filteredMenu.length} result{filteredMenu.length !== 1 ? "s" : ""} for "{searchQuery}"
-          </motion.p>
+          </m.p>
         )}
-      </motion.div>
+      </m.div>
 
       {/* Category Filter */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
         className="flex flex-wrap justify-center gap-3 px-6 pb-12"
       >
         {categories.map((category) => (
-          <motion.button
+          <m.button
             key={category}
             onClick={() => setSelectedCategory(category)}
             whileHover={{ scale: 1.1 }}
@@ -153,12 +153,12 @@ export default function Food() {
             }`}
           >
             {category}
-          </motion.button>
+          </m.button>
         ))}
-      </motion.div>
+      </m.div>
 
       {/* Menu Grid */}
-      <motion.div
+      <m.div
         className="container mx-auto px-4 pb-16"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -166,7 +166,7 @@ export default function Food() {
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {filteredMenu.map((item) => (
-            <motion.div
+            <m.div
               key={item.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -179,7 +179,7 @@ export default function Food() {
 
                 {/* Image Section */}
                 <div className="relative bg-linear-to-br from-orange-100 to-yellow-100 overflow-hidden h-40 flex items-center justify-center cursor-pointer group" onClick={() => handleImageClick(item.id)}>
-                  <motion.img
+                  <m.img
                     src={item.img}
                     alt={item.name}
                     className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300"
@@ -217,17 +217,17 @@ export default function Food() {
 
                   {/* Rating & Time */}
                   <div className="flex justify-between items-center mb-3 py-2 border-t border-gray-200">
-                    <motion.span
+                    <m.span
                       className="bg-linear-to-r from-yellow-300 to-yellow-100 text-yellow-800 px-2 py-0.5 rounded-lg text-xs font-bold"
                       whileHover={{ scale: 1.1 }}
                     >
                       ⭐ {item.rating}
-                    </motion.span>
+                    </m.span>
                     <span className="text-gray-600 text-xs font-medium">⏱ {item.time}</span>
                   </div>
 
                   {/* Price */}
-                  <motion.div
+                  <m.div
                     className="mb-3"
                     animate={{
                       scale: [1, 1.05, 1],
@@ -237,10 +237,10 @@ export default function Food() {
                     <span className="text-2xl font-black text-transparent bg-linear-to-r from-orange-500 to-red-600 bg-clip-text">
                       ₹{item.price}
                     </span>
-                  </motion.div>
+                  </m.div>
 
                   {/* Add to Cart Button */}
-                  <motion.button
+                  <m.button
                     onClick={() => handleAddToCart(item)}
                     whileHover={addedItems[item.id] ? {} : { scale: 1.05 }}
                     whileTap={addedItems[item.id] ? {} : { scale: 0.95 }}
@@ -251,26 +251,26 @@ export default function Food() {
                         : "bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white"
                     }`}
                   >
-                    <motion.span
+                    <m.span
                       animate={addedItems[item.id] ? { scale: [1, 1.2, 0.8] } : {}}
                       transition={{ duration: 0.5 }}
                     >
                       🛒
-                    </motion.span>
+                    </m.span>
                     <span>
                       {addedItems[item.id] ? "Added!" : "Add to Cart"}
                     </span>
-                  </motion.button>
+                  </m.button>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
-      </motion.div>
+      </m.div>
 
       {/* Empty State */}
       {filteredMenu.length === 0 && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-center py-16"
@@ -278,7 +278,7 @@ export default function Food() {
           <p className="text-2xl text-gray-600 font-bold mb-4">
             {searchQuery ? `No items found for "${searchQuery}"` : "No items found in this category"}
           </p>
-          <motion.button
+          <m.button
             onClick={() => {
               setSearchQuery("");
               setSelectedCategory("All");
@@ -287,8 +287,8 @@ export default function Food() {
             className="px-6 py-2 bg-orange-500 text-white rounded-full font-bold hover:bg-orange-600"
           >
             Clear Filters
-          </motion.button>
-        </motion.div>
+          </m.button>
+        </m.div>
       )}
     </div>
   );

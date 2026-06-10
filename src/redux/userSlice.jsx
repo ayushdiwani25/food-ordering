@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { 
   saveAddresses,
-  saveFavorites,
   logoutUser
 } from "../lib/storage";
 
@@ -47,15 +46,6 @@ const userSlice = createSlice({
       saveAddresses(state.addresses);
     },
 
-    // Update address
-    updateAddress: (state, action) => {
-      const index = state.addresses.findIndex(addr => addr.id === action.payload.id);
-      if (index !== -1) {
-        state.addresses[index] = action.payload;
-        saveAddresses(state.addresses);
-      }
-    },
-
     // Delete address
     deleteAddress: (state, action) => {
       state.addresses = state.addresses.filter(addr => addr.id !== action.payload);
@@ -65,20 +55,6 @@ const userSlice = createSlice({
     // Select address
     selectAddress: (state, action) => {
       state.selectedAddress = action.payload;
-    },
-
-    // Add favorite restaurant/item
-    addFavorite: (state, action) => {
-      if (!state.favorites.find(fav => fav.id === action.payload.id)) {
-        state.favorites.push(action.payload);
-        saveFavorites(state.favorites);
-      }
-    },
-
-    // Remove favorite
-    removeFavorite: (state, action) => {
-      state.favorites = state.favorites.filter(fav => fav.id !== action.payload);
-      saveFavorites(state.favorites);
     },
 
     // Update user profile
@@ -93,11 +69,8 @@ export const {
   logout,
   restoreUserFromStorage,
   addAddress,
-  updateAddress,
   deleteAddress,
   selectAddress,
-  addFavorite,
-  removeFavorite,
   updateProfile
 } = userSlice.actions;
 

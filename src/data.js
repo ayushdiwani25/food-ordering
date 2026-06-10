@@ -1,5 +1,3 @@
-
-
 export const MENU = [
   // Pizzas
   {
@@ -10,7 +8,7 @@ export const MENU = [
     price: 179,
     rating: 4.8,
     time: "25-30 min",
-    img:"https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460244/Margherita-Royale_go5p4a.png",
+    img:"https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460244/Margherita-Royale_go5p4a.png",
     badge: "Bestseller",
     veg: true
   },
@@ -22,7 +20,7 @@ export const MENU = [
     price: 299,
     rating: 4.7,
     time: "25-35 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460236/BBQ-Chicken-Blaze_e5vbji.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460236/BBQ-Chicken-Blaze_e5vbji.png",
     badge: "Spicy 🌶",
     veg: false
   },
@@ -34,7 +32,7 @@ export const MENU = [
     price: 319,
     rating: 4.9,
     time: "20-30 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460251/Pepperoni-Storm_aq73na.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460251/Pepperoni-Storm_aq73na.png",
     badge: "Hot Pick",
     veg: false
   },
@@ -46,7 +44,7 @@ export const MENU = [
     price: 349,
     rating: 4.6,
     time: "30-35 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460255/Truffle-Mushroom_i5d8w5.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460255/Truffle-Mushroom_i5d8w5.png",
     badge: "Chef's Special",
     veg: true
   },
@@ -58,7 +56,7 @@ export const MENU = [
     price: 329,
     rating: 4.8,
     time: "25-30 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460244/Four-Cheese-Dream_uqqm2m.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460244/Four-Cheese-Dream_uqqm2m.png",
     badge: null,
     veg: true
   },
@@ -70,7 +68,7 @@ export const MENU = [
     price: 259,
     rating: 4.5,
     time: "20-25 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460255/Veggie-Garden_kz42a4.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460255/Veggie-Garden_kz42a4.png",
     badge: null,
     veg: true
   },
@@ -84,7 +82,7 @@ export const MENU = [
     price: 99,
     rating: 4.7,
     time: "15-20 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460238/Classic-Smash-Burger_amwrwx.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460238/Classic-Smash-Burger_amwrwx.png",
     badge: "Bestseller",
     veg: false
   },
@@ -96,7 +94,7 @@ export const MENU = [
     price: 129,
     rating: 4.8,
     time: "15-20 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460236/Crispy-Chicken-Crunch_yom5yu.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460236/Crispy-Chicken-Crunch_yom5yu.png",
     badge: "Hot Pick",
     veg: false
   },
@@ -108,7 +106,7 @@ export const MENU = [
     price: 149,
     rating: 4.6,
     time: "15-25 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460244/Mushroom-Swiss-Melt_nlpm6i.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460244/Mushroom-Swiss-Melt_nlpm6i.png",
     badge: null,
     veg: false
   },
@@ -120,7 +118,7 @@ export const MENU = [
     price: 169,
     rating: 4.5,
     time: "15-20 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460250/Spicy-Volcano-Burger_xvnkor.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460250/Spicy-Volcano-Burger_xvnkor.png",
     badge: "Spicy 🌶",
     veg: false
   },
@@ -132,7 +130,7 @@ export const MENU = [
     price: 79,
     rating: 4.4,
     time: "15-20 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460253/Veg-Pattie-Supreme_tqaq3t.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460253/Veg-Pattie-Supreme_tqaq3t.png",
     badge: null,
     veg: true
   },
@@ -144,7 +142,7 @@ export const MENU = [
     price: 199,
     rating: 4.9,
     time: "20-25 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460233/BBQ-Bacon-Tower_ftrg2x.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460233/BBQ-Bacon-Tower_ftrg2x.png",
     badge: "Loaded!",
     veg: false
   },
@@ -158,7 +156,7 @@ export const MENU = [
     price: 89,
     rating: 4.8,
     time: "5-10 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460244/Mango-Chiller_viabwr.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460244/Mango-Chiller_viabwr.png",
     badge: "Summer Fav",
     veg: true
   },
@@ -170,7 +168,7 @@ export const MENU = [
     price: 99,
     rating: 4.6,
     time: "5 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460237/Classic-Cola-Float_web4oj.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460237/Classic-Cola-Float_web4oj.png",
     badge: null,
     veg: true
   },
@@ -182,7 +180,7 @@ export const MENU = [
     price: 109,
     rating: 4.7,
     time: "5-10 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460235/Blue-Lagoon-Blast_vdvqxv.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460235/Blue-Lagoon-Blast_vdvqxv.png",
     badge: "Trending",
     veg: true
   },
@@ -194,7 +192,7 @@ export const MENU = [
     price: 95,
     rating: 4.9,
     time: "5-10 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460251/Strawberry-Lemonade_jomlxy.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460251/Strawberry-Lemonade_jomlxy.png",
     badge: "Bestseller",
     veg: true
   },
@@ -206,7 +204,7 @@ export const MENU = [
     price: 119,
     rating: 4.7,
     time: "5-10 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460240/Iced-Mocha-Shake_v6h6b3.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460240/Iced-Mocha-Shake_v6h6b3.png",
     badge: null,
     veg: true
   },
@@ -218,7 +216,7 @@ export const MENU = [
     price: 79,
     rating: 4.8,
     time: "5 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460264/Virgin-Mojito_dsqwi2.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460264/Virgin-Mojito_dsqwi2.png",
     badge: "Classic",
     veg: true
   },
@@ -230,7 +228,7 @@ export const MENU = [
     price: 89,
     rating: 4.6,
     time: "5-10 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460257/Watermelon-Cooler_ynnyek.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460257/Watermelon-Cooler_ynnyek.png",
     badge: null,
     veg: true
   },
@@ -242,7 +240,7 @@ export const MENU = [
     price: 129,
     rating: 4.9,
     time: "5-10 min",
-    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460239/Oreo-Milkshake_sjs7x1.png",
+    img: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460239/Oreo-Milkshake_sjs7x1.png",
     badge: "Fan Fav",
     veg: true
   }
@@ -256,7 +254,7 @@ export const RESTAURANTS = [
   {
     id: 101,
     name: "Pizza Hut Express",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460244/Margherita-Royale_go5p4a.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460244/Margherita-Royale_go5p4a.png",
     location: "Downtown Ahmedabad",
     rating: 4.8,
     deliveryTime: "25-35 min",
@@ -273,7 +271,7 @@ export const RESTAURANTS = [
   {
     id: 102,
     name: "Burger King",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460238/Classic-Smash-Burger_amwrwx.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460238/Classic-Smash-Burger_amwrwx.png",
     location: "CG Road, Ahmedabad",
     rating: 4.7,
     deliveryTime: "15-25 min",
@@ -290,7 +288,7 @@ export const RESTAURANTS = [
   {
     id: 103,
     name: "Thirst Quenchers Cafe",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460244/Mango-Chiller_viabwr.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460244/Mango-Chiller_viabwr.png",
     location: "Satellite, Ahmedabad",
     rating: 4.6,
     deliveryTime: "10-15 min",
@@ -307,7 +305,7 @@ export const RESTAURANTS = [
   {
     id: 104,
     name: "The Gourmet Kitchen",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460255/Truffle-Mushroom_i5d8w5.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460255/Truffle-Mushroom_i5d8w5.png",
     location: "Manek Chowk, Ahmedabad",
     rating: 4.9,
     deliveryTime: "30-40 min",
@@ -326,7 +324,7 @@ export const RESTAURANTS = [
   {
     id: 105,
     name: "Domino's Pizza",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460236/BBQ-Chicken-Blaze_e5vbji.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460236/BBQ-Chicken-Blaze_e5vbji.png",
     location: "Vastrapur, Ahmedabad",
     rating: 4.3,
     deliveryTime: "20-30 min",
@@ -343,7 +341,7 @@ export const RESTAURANTS = [
   {
     id: 106,
     name: "La Pino'z Pizza",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460251/Pepperoni-Storm_aq73na.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460251/Pepperoni-Storm_aq73na.png",
     location: "Thaltej, Ahmedabad",
     rating: 4.4,
     deliveryTime: "22-32 min",
@@ -360,7 +358,7 @@ export const RESTAURANTS = [
   {
     id: 107,
     name: "McDonald's",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil /v1780460236/Crispy-Chicken-Crunch_yom5yu.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460236/Crispy-Chicken-Crunch_yom5yu.png",
     location: "SG Highway, Ahmedabad",
     rating: 4.0,
     deliveryTime: "15-20 min",
@@ -377,7 +375,7 @@ export const RESTAURANTS = [
   {
     id: 108,
     name: "US Pizza",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460244/Margherita-Royale_go5p4a.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460244/Margherita-Royale_go5p4a.png",
     location: "Paldi, Ahmedabad",
     rating: 4.2,
     deliveryTime: "25-35 min",
@@ -396,7 +394,7 @@ export const RESTAURANTS = [
   {
     id: 109,
     name: "Pizza World",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460255/Veggie-Garden_kz42a4.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460255/Veggie-Garden_kz42a4.png",
     location: "Nikol, Ahmedabad",
     rating: 3.9,
     deliveryTime: "20-28 min",
@@ -413,7 +411,7 @@ export const RESTAURANTS = [
   {
     id: 110,
     name: "Hungry Point",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460238/Classic-Smash-Burger_amwrwx.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460238/Classic-Smash-Burger_amwrwx.png",
     location: "Vesu, Ahmedabad",
     rating: 4.1,
     deliveryTime: "18-25 min",
@@ -430,7 +428,7 @@ export const RESTAURANTS = [
   {
     id: 111,
     name: "Food Express",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460236/BBQ-Chicken-Blaze_e5vbji.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460236/BBQ-Chicken-Blaze_e5vbji.png",
     location: "Memnagar, Ahmedabad",
     rating: 3.8,
     deliveryTime: "15-22 min",
@@ -447,7 +445,7 @@ export const RESTAURANTS = [
   {
     id: 112,
     name: "Street Bites",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460236/Crispy-Chicken-Crunch_yom5yu.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460236/Crispy-Chicken-Crunch_yom5yu.png",
     location: "Gotri, Ahmedabad",
     rating: 4.0,
     deliveryTime: "12-18 min",
@@ -466,7 +464,7 @@ export const RESTAURANTS = [
   {
     id: 113,
     name: "Coffee Corner Cafe",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460240/Iced-Mocha-Shake_v6h6b3.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460240/Iced-Mocha-Shake_v6h6b3.png",
     location: "University Road, Ahmedabad",
     rating: 4.5,
     deliveryTime: "10-15 min",
@@ -483,7 +481,7 @@ export const RESTAURANTS = [
   {
     id: 114,
     name: "Juice Master",
-    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fil/v1780460251/Strawberry-Lemonade_jomlxy.png",
+    image: "https://res.cloudinary.com/dyoht5hxt/image/upload/f_auto,q_auto,w_500,h_400,c_fill/v1780460251/Strawberry-Lemonade_jomlxy.png",
     location: "Ellisbridge, Ahmedabad",
     rating: 4.2,
     deliveryTime: "8-12 min",
@@ -602,42 +600,4 @@ export const DEALS = [
     restaurantId: 105,
     badge: "💪 Best Combo"
   }
-];
-
-// ====================================================
-// 💳 PAYMENT METHODS
-// ====================================================
-export const PAYMENT_METHODS = [
-  { id: 1, type: "Credit Card", lastDigits: "****", icon: "💳" },
-  { id: 2, type: "Debit Card", lastDigits: "****", icon: "🏦" },
-  { id: 3, type: "UPI", value: "user@upi", icon: "📱" },
-  { id: 4, type: "Wallet", balance: 0, icon: "👛" },
-  { id: 5, type: "Net Banking", available: true, icon: "💻" },
-  { id: 6, type: "Cash on Delivery", available: true, icon: "💵" }
-];
-
-// ====================================================
-// 📊 RESTAURANT CATEGORIES
-// ====================================================
-export const RESTAURANT_CATEGORIES = [
-  { id: 1, name: "Pizza", icon: "🍕" },
-  { id: 2, name: "Burger", icon: "🍔" },
-  { id: 3, name: "Drinks", icon: "🥤" },
-  { id: 4, name: "Cafe", icon: "☕" },
-  { id: 5, name: "Fast Food", icon: "⚡" },
-  { id: 6, name: "Italian", icon: "🇮🇹" },
-  { id: 7, name: "American", icon: "🇺🇸" },
-  { id: 8, name: "Premium", icon: "✨" }
-];
-
-// ====================================================
-// 📍 DELIVERY ZONES
-// ====================================================
-export const DELIVERY_ZONES = [
-  { id: 1, name: "Downtown Ahmedabad", deliveryFee: 30, minOrder: 100 },
-  { id: 2, name: "CG Road", deliveryFee: 25, minOrder: 80 },
-  { id: 3, name: "Satellite", deliveryFee: 35, minOrder: 120 },
-  { id: 4, name: "SG Highway", deliveryFee: 40, minOrder: 150 },
-  { id: 5, name: "Vastrapur", deliveryFee: 28, minOrder: 90 },
-  { id: 6, name: "Thaltej", deliveryFee: 32, minOrder: 110 }
 ];

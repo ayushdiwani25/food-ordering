@@ -150,13 +150,17 @@ export default function Home() {
             {/* Background overlay for mobile */}
             <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all duration-300 z-10"></div>
             
-            <m.img
-              src={item.img}
-              alt={item.label}
-              className="w-full h-full object-cover"
+            <m.div
               whileHover={{ scale: 1.15 }}
               transition={{ duration: 0.5 }}
-            />
+              className="w-full h-full"
+            >
+              <img
+                src={item.img}
+                alt={item.label}
+                className="w-full h-full object-cover"
+              />
+            </m.div>
             <m.div
               className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent flex items-end justify-center pb-6 z-20"
               initial={{ opacity: 0 }}

@@ -179,13 +179,17 @@ export default function Food() {
 
                 {/* Image Section */}
                 <div className="relative bg-linear-to-br from-orange-100 to-yellow-100 overflow-hidden h-40 flex items-center justify-center cursor-pointer group" onClick={() => handleImageClick(item.id)}>
-                  <m.img
-                    src={item.img}
-                    alt={item.name}
-                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  <m.div
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                  />
+                    className="h-full w-full flex items-center justify-center"
+                  >
+                    <img
+                      src={item.img}
+                      alt={item.name}
+                      className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </m.div>
                   <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                 </div>
 

@@ -11,7 +11,7 @@ import OrdersPage from "./pages/orders";
 import DealsPage from "./pages/deals";
 import RestaurantAdminPanel from "./pages/admin-panel";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { motion, AnimatePresence, MotionConfig, LazyMotion, m, domAnimation } from "framer-motion";
+import { AnimatePresence, MotionConfig, LazyMotion, m, domAnimation } from "framer-motion";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import LoginPage from "./pages/login";

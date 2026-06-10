@@ -193,12 +193,6 @@ export const logoutUser = () => {
   }
 };
 
-// Check if email is already registered
-export const isEmailRegistered = (email) => {
-  const allUsers = getAllUsers();
-  return allUsers.some(u => u.email === email);
-};
-
 // ====== ADDRESS FUNCTIONS ======
 
 export const saveAddresses = (addresses) => {
@@ -322,24 +316,12 @@ export const deleteRestaurantItem = (restaurantId, itemId) => {
   }
 };
 
-// Get restaurant item by ID
-export const getRestaurantItemById = (restaurantId, itemId) => {
-  try {
-    const items = getRestaurantItems(restaurantId);
-    return items.find(i => i.id === itemId) || null;
-  } catch (error) {
-    console.error("Error getting restaurant item:", error);
-    return null;
-  }
-};
-
 export default {
   STORAGE_KEYS,
   registerUser,
   verifyLogin,
   getCurrentUser,
   logoutUser,
-  isEmailRegistered,
   isUserAdmin,
   saveAddresses,
   getAddresses,
@@ -351,6 +333,5 @@ export default {
   saveRestaurantItems,
   getRestaurantItems,
   saveRestaurantItem,
-  deleteRestaurantItem,
-  getRestaurantItemById
+  deleteRestaurantItem
 };

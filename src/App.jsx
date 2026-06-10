@@ -57,111 +57,113 @@ export default function App() {
   }, [dispatch]);
 
   return (
-    <div className="App">
+    <div className="App flex flex-col min-h-screen">
       <MotionConfig reducedMotion="user">
         <LazyMotion features={domAnimation}>
           <Router>
             <Navbar cartCount={cartItems.reduce((total, item) => total + (item.qty || 1), 0)} />
-            <AnimatePresence mode="wait">
-          <Routes>
-            <Route 
-              path="/" 
-              element={
-                <PageTransition>
-                  <Home />
-                </PageTransition>
-              } 
-            />
-            <Route 
-              path="/login" 
-              element={
-                <PageTransition>
-                  <LoginPage />
-                </PageTransition>
-              } 
-            />
-            <Route 
-              path="/signup" 
-              element={
-                <PageTransition>
-                  <SignupPage />
-                </PageTransition>
-              } 
-            />
-            <Route 
-              path="/restaurants" 
-              element={
-                <PageTransition>
-                  <RestaurantsPage />
-                </PageTransition>
-              } 
-            />
-            <Route 
-              path="/restaurant/:restaurantId" 
-              element={
-                <PageTransition>
-                  <RestaurantDetailsPage />
-                </PageTransition>
-              } 
-            />
-            <Route 
-              path="/food" 
-              element={
-                <PageTransition>
-                  <Food />
-                </PageTransition>
-              } 
-            />
-            <Route 
-              path="/cart" 
-              element={
-                <PageTransition>
-                  <Cart />
-                </PageTransition>
-              } 
-            />
-            <Route 
-              path="/checkout" 
-              element={
-                <PageTransition>
-                  <Checkout />
-                </PageTransition>
-              } 
-            />
-            <Route 
-              path="/profile" 
-              element={
-                <PageTransition>
-                  <ProfilePage />
-                </PageTransition>
-              } 
-            />
-            <Route 
-              path="/orders" 
-              element={
-                <PageTransition>
-                  <OrdersPage />
-                </PageTransition>
-              } 
-            />
-            <Route 
-              path="/deals" 
-              element={
-                <PageTransition>
-                  <DealsPage />
-                </PageTransition>
-              } 
-            />
-            <Route 
-              path="/admin/restaurants" 
-              element={
-                <PageTransition>
-                  <RestaurantAdminPanel />
-                </PageTransition>
-              } 
-            />
-          </Routes>
-            </AnimatePresence>
+            <main className="flex-1 flex flex-col">
+              <AnimatePresence mode="wait">
+                <Routes>
+                  <Route 
+                    path="/" 
+                    element={
+                      <PageTransition>
+                        <Home />
+                      </PageTransition>
+                    } 
+                  />
+                  <Route 
+                    path="/login" 
+                    element={
+                      <PageTransition>
+                        <LoginPage />
+                      </PageTransition>
+                    } 
+                  />
+                  <Route 
+                    path="/signup" 
+                    element={
+                      <PageTransition>
+                        <SignupPage />
+                      </PageTransition>
+                    } 
+                  />
+                  <Route 
+                    path="/restaurants" 
+                    element={
+                      <PageTransition>
+                        <RestaurantsPage />
+                      </PageTransition>
+                    } 
+                  />
+                  <Route 
+                    path="/restaurant/:restaurantId" 
+                    element={
+                      <PageTransition>
+                        <RestaurantDetailsPage />
+                      </PageTransition>
+                    } 
+                  />
+                  <Route 
+                    path="/food" 
+                    element={
+                      <PageTransition>
+                        <Food />
+                      </PageTransition>
+                    } 
+                  />
+                  <Route 
+                    path="/cart" 
+                    element={
+                      <PageTransition>
+                        <Cart />
+                      </PageTransition>
+                    } 
+                  />
+                  <Route 
+                    path="/checkout" 
+                    element={
+                      <PageTransition>
+                        <Checkout />
+                      </PageTransition>
+                    } 
+                  />
+                  <Route 
+                    path="/profile" 
+                    element={
+                      <PageTransition>
+                        <ProfilePage />
+                      </PageTransition>
+                    } 
+                  />
+                  <Route 
+                    path="/orders" 
+                    element={
+                      <PageTransition>
+                        <OrdersPage />
+                      </PageTransition>
+                    } 
+                  />
+                  <Route 
+                    path="/deals" 
+                    element={
+                      <PageTransition>
+                        <DealsPage />
+                      </PageTransition>
+                    } 
+                  />
+                  <Route 
+                    path="/admin/restaurants" 
+                    element={
+                      <PageTransition>
+                        <RestaurantAdminPanel />
+                      </PageTransition>
+                    } 
+                  />
+                </Routes>
+              </AnimatePresence>
+            </main>
             <Footer />
           </Router>
         </LazyMotion>

@@ -10,10 +10,12 @@ import { login } from "../redux/userSlice";
 import { verifyLogin } from "../lib/storage";
 import { validateLogin } from "../lib/validation";
 
+const emojis = ["🍕", "🍔", "🥤", "🍟", "🌮", "🍦"];
+
 export default function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [loginSuccess, setLoginSuccess] = useState(false);
@@ -59,78 +61,104 @@ export default function LoginPage() {
 
   if (loginSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-yellow-500 via-orange-500 to-red-500 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-orange-400 via-yellow-400 to-green-400 p-4">
         <m.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 200, damping: 15 }}
           className="bg-white p-8 rounded-2xl shadow-2xl text-center"
         >
-          <div className="text-6xl mb-4 animate-bounce">✅</div>
-          <h2 className="text-3xl font-bold text-green-600 mb-2">Login Successful!</h2>
-          <p className="text-gray-600">Welcome back! 🎉</p>
+          <div className="text-6xl mb-4 animate-bounce">🎉</div>
+          <h2 className="text-3xl font-bold text-green-600 mb-2">
+            Login Successful!
+          </h2>
+          <p className="text-gray-600">Welcome back! 🔓</p>
         </m.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-yellow-200 via-orange-300 to-red-300 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-orange-100 via-orange-200 to-red-200 p-4 relative overflow-hidden">
+      {/* Floating food emojis */}
+      {emojis.map((emoji, i) => (
+        <m.div
+          key={i}
+          className="absolute text-4xl opacity-15 select-none pointer-events-none"
+          style={{ left: `${15 + i * 14}%`, top: `${10 + (i % 3) * 35}%` }}
+          animate={{ y: [0, -20, 0], rotate: [0, 10, -10, 0] }}
+          transition={{ duration: 4 + i, repeat: Infinity, delay: i * 0.3 }}
+        >
+          {emoji}
+        </m.div>
+      ))}
+
       <m.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-md"
+        className="w-full max-w-md relative z-10"
       >
-        <Card className="rounded-2xl shadow-2xl bg-white/95 backdrop-blur-md border-2 border-orange-200">
+        <Card className="rounded-2xl shadow-2xl bg-white/95 backdrop-blur-md border-2 border-orange-200 overflow-hidden">
+          <div className="h-2 bg-linear-to-r" />
           <CardContent className="p-8">
-            <h2 className="text-3xl font-bold text-orange-600 text-center mb-2">
-              Welcome Back 👋
+            <h2 className="text-3xl font-black text-center mb-1">
+              <span className="bg-linear-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                Welcome Back
+              </span>
             </h2>
-            <p className="text-gray-600 text-center mb-6">Login to your account</p>
+            <p className="text-gray-500 text-center mb-6">
+              Login to your account
+            </p>
 
             {error && (
-              <div className="bg-red-100 border-2 border-red-300 text-red-700 px-4 py-3 rounded-lg mb-4 font-semibold">
-                {error}
+              <div className="bg-red-50 border-2 border-red-200 text-red-600 px-4 py-3 rounded-lg mb-4 font-semibold">
+                ⚠️ {error}
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 text-orange-500" size={18} />
+              <div>
                 <Input
                   name="email"
                   type="email"
                   placeholder="Email Address"
                   value={form.email}
                   onChange={handleChange}
-                  className="pl-10 border-2 border-gray-300 focus:border-orange-500"
+                  /* Changed p-4 to py-6 px-4 for a taller, cleaner look */
+                  className="py-6 px-4 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white transition-all"
                 />
               </div>
 
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 text-orange-500" size={18} />
+              <div>
                 <Input
                   name="password"
                   type="password"
                   placeholder="Password"
                   value={form.password}
                   onChange={handleChange}
-                  className="pl-10 border-2 border-gray-300 focus:border-orange-500"
+                  /* Changed p-4 to py-6 px-4 */
+                  className="py-6 px-4 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white transition-all"
                 />
               </div>
 
-              <Button
-                type="submit"
-                className="w-full bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3 rounded-lg transition transform hover:scale-105"
-              >
-                Login 🔓
-              </Button>
+              <m.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button
+                  type="submit"
+                  /* Removed conflicting p-5 and py-3. Used py-6 for matching thickness */
+                  className="w-full py-6 bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-xl text-lg shadow-lg transition-all"
+                >
+                  Login
+                </Button>
+              </m.div>
             </form>
-
-            <p className="text-center text-gray-600 mt-6">
+            <p className="text-center text-gray-500 mt-6">
               Don't have an account?{" "}
-              <Link to="/signup" className="text-orange-600 font-bold hover:underline">
-                Sign Up Here
+              <Link
+                to="/signup"
+                className="text-orange-600 font-bold hover:text-orange-700 transition-colors"
+              >
+                Sign Up Here →
               </Link>
             </p>
           </CardContent>

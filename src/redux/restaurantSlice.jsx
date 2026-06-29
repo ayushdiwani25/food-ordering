@@ -1,9 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { 
-  saveRestaurantItems,
-  getRestaurantItems,
-  saveAllRestaurants
-} from "../lib/storage";
 
 const initialState = {
   restaurants: [],
@@ -18,27 +13,20 @@ const restaurantSlice = createSlice({
     // Set current restaurant
     setCurrentRestaurant: (state, action) => {
       state.currentRestaurant = action.payload;
-      state.items = getRestaurantItems(action.payload.id) || [];
+      state.items = [];
     },
 
-    // Load restaurant items
+    // Load restaurant items (from MENU data + Firestore custom items)
     loadRestaurantItems: (state, action) => {
       state.items = action.payload;
     },
 
-    // Add new item to restaurant menu
+    // Add new item to restaurant menu (Firestore sync handled in component)
     addItem: (state, action) => {
-      const newItem = {
-        id: Date.now(),
-        ...action.payload,
-        restaurantId: state.currentRestaurant?.id,
-        createdAt: new Date().toISOString()
-      };
-      state.items.push(newItem);
-      saveRestaurantItems(state.currentRestaurant?.id, state.items);
+      state.items.push(action.payload);
     },
 
-    // Update existing item
+    // Update existing item (Firestore sync handled in component)
     updateItem: (state, action) => {
       const index = state.items.findIndex(item => item.id === action.payload.id);
       if (index !== -1) {
@@ -47,14 +35,12 @@ const restaurantSlice = createSlice({
           ...action.payload,
           updatedAt: new Date().toISOString()
         };
-        saveRestaurantItems(state.currentRestaurant?.id, state.items);
       }
     },
 
-    // Delete item from menu
+    // Delete item from menu (Firestore sync handled in component)
     deleteItem: (state, action) => {
       state.items = state.items.filter(item => item.id !== action.payload);
-      saveRestaurantItems(state.currentRestaurant?.id, state.items);
     },
 
     // Set all restaurants
@@ -69,7 +55,6 @@ const restaurantSlice = createSlice({
         const index = state.restaurants.findIndex(r => r.id === state.currentRestaurant.id);
         if (index !== -1) {
           state.restaurants[index] = state.currentRestaurant;
-          saveAllRestaurants(state.restaurants);
         }
       }
     }

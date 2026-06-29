@@ -14,7 +14,7 @@ const orderSlice = createSlice({
       const activeExpireTime = now + 10 * 60 * 1000; // 10 minutes from now
       
       const newOrder = {
-        id: `ORD-${Date.now()}`,
+        id: action.payload.id || `ORD-${Date.now()}`,
         items: action.payload.items,
         total: action.payload.total,
         restaurant: action.payload.restaurant,
@@ -31,6 +31,12 @@ const orderSlice = createSlice({
       state.orders.unshift(newOrder);
       state.activeOrder = newOrder;
     },
+
+    // Load orders fetched from Firestore
+    loadOrders: (state, action) => {
+      state.orders = action.payload;
+    },
+
     updateOrderStatus: (state, action) => {
       const order = state.orders.find(o => o.id === action.payload.orderId);
       if (order) {
@@ -40,15 +46,18 @@ const orderSlice = createSlice({
         state.activeOrder.status = action.payload.status;
       }
     },
+
     cancelOrder: (state, action) => {
       const order = state.orders.find(o => o.id === action.payload);
       if (order) {
         order.status = "Cancelled";
       }
     },
+
     clearActiveOrder: (state) => {
       state.activeOrder = null;
     },
+
     addReview: (state, action) => {
       const order = state.orders.find(o => o.id === action.payload.orderId);
       if (order) {
@@ -56,6 +65,7 @@ const orderSlice = createSlice({
         order.rating = action.payload.rating;
       }
     },
+
     expireActiveOrders: (state) => {
       const now = Date.now();
       state.orders.forEach(order => {
@@ -72,6 +82,7 @@ const orderSlice = createSlice({
 
 export const {
   placeOrder,
+  loadOrders,
   updateOrderStatus,
   cancelOrder,
   clearActiveOrder,

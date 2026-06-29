@@ -4,7 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { m } from "framer-motion";
 import { RESTAURANTS, MENU } from "../data";
 import { setCurrentRestaurant, loadRestaurantItems, addItem, updateItem, deleteItem } from "../redux/restaurantSlice";
-import { getRestaurantItems } from "../lib/storage";
+
+// Firebase imports
+import { collection, doc, setDoc, getDocs, updateDoc, deleteDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 export default function RestaurantAdminPanel() {
   const navigate = useNavigate();
@@ -17,6 +20,7 @@ export default function RestaurantAdminPanel() {
   const [editingItem, setEditingItem] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCategory, setFilterCategory] = useState("All");
+  const [itemsLoading, setItemsLoading] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -35,30 +39,44 @@ export default function RestaurantAdminPanel() {
     }
   }, [isLoggedIn, navigate]);
 
-  // Initialize with first restaurant (demo)
+  // Load restaurant items from MENU data + Firestore custom items
+  const loadItemsForRestaurant = async (restaurant) => {
+    setItemsLoading(true);
+    try {
+      // Base menu items from local data
+      const menuItems = MENU.filter(item => restaurant.menu.includes(item.id));
+
+      // Custom items from Firestore
+      const customItemsSnap = await getDocs(
+        collection(db, "restaurants", String(restaurant.id), "customItems")
+      );
+      const customItems = customItemsSnap.docs.map(d => d.data());
+
+      dispatch(loadRestaurantItems([...menuItems, ...customItems]));
+    } catch (err) {
+      console.error("Error loading restaurant items from Firestore:", err);
+      // Fallback to menu items only
+      const menuItems = MENU.filter(item => restaurant.menu.includes(item.id));
+      dispatch(loadRestaurantItems(menuItems));
+    } finally {
+      setItemsLoading(false);
+    }
+  };
+
+  // Initialize with first restaurant
   useEffect(() => {
     if (RESTAURANTS.length > 0 && !selectedRestaurant) {
       const firstRestaurant = RESTAURANTS[0];
       setSelectedRestaurant(firstRestaurant);
       dispatch(setCurrentRestaurant(firstRestaurant));
-      
-      // Load both menu items from MENU and custom items from storage
-      const menuItems = MENU.filter(item => firstRestaurant.menu.includes(item.id));
-      const customItems = getRestaurantItems(firstRestaurant.id);
-      const allItems = [...menuItems, ...customItems];
-      dispatch(loadRestaurantItems(allItems));
+      loadItemsForRestaurant(firstRestaurant);
     }
   }, [dispatch]);
 
   const handleSelectRestaurant = (restaurant) => {
     setSelectedRestaurant(restaurant);
     dispatch(setCurrentRestaurant(restaurant));
-    
-    // Load both menu items from MENU and custom items from storage
-    const menuItems = MENU.filter(item => restaurant.menu.includes(item.id));
-    const customItems = getRestaurantItems(restaurant.id);
-    const allItems = [...menuItems, ...customItems];
-    dispatch(loadRestaurantItems(allItems));
+    loadItemsForRestaurant(restaurant);
     setEditingItem(null);
     setShowAddForm(false);
   };
@@ -71,7 +89,7 @@ export default function RestaurantAdminPanel() {
     }));
   };
 
-  const handleAddItem = (e) => {
+  const handleAddItem = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.price || !formData.category) {
       alert("Please fill required fields");
@@ -79,12 +97,47 @@ export default function RestaurantAdminPanel() {
     }
 
     if (editingItem) {
-      // Update existing item
-      dispatch(updateItem({ ...editingItem, ...formData }));
+      // Update existing custom item
+      const updatedItem = {
+        ...editingItem,
+        ...formData,
+        updatedAt: new Date().toISOString()
+      };
+      dispatch(updateItem(updatedItem));
+
+      // Sync to Firestore (only if it's a custom item, not from MENU)
+      if (!selectedRestaurant.menu.includes(editingItem.id)) {
+        try {
+          await updateDoc(
+            doc(db, "restaurants", String(selectedRestaurant.id), "customItems", String(editingItem.id)),
+            updatedItem
+          );
+        } catch (err) {
+          console.error("Failed to update item in Firestore:", err);
+        }
+      }
       setEditingItem(null);
     } else {
-      // Add new item
-      dispatch(addItem(formData));
+      // Add new custom item
+      const newItem = {
+        id: `custom-${Date.now()}`,
+        ...formData,
+        price: Number(formData.price),
+        restaurantId: selectedRestaurant?.id,
+        isCustom: true,
+        createdAt: new Date().toISOString()
+      };
+      dispatch(addItem(newItem));
+
+      // Persist to Firestore
+      try {
+        await setDoc(
+          doc(db, "restaurants", String(selectedRestaurant.id), "customItems", String(newItem.id)),
+          newItem
+        );
+      } catch (err) {
+        console.error("Failed to save new item to Firestore:", err);
+      }
     }
 
     // Reset form
@@ -112,9 +165,20 @@ export default function RestaurantAdminPanel() {
     setShowAddForm(true);
   };
 
-  const handleDeleteItem = (itemId) => {
+  const handleDeleteItem = async (itemId) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       dispatch(deleteItem(itemId));
+
+      // Delete from Firestore if it's a custom item
+      if (!selectedRestaurant.menu.includes(itemId)) {
+        try {
+          await deleteDoc(
+            doc(db, "restaurants", String(selectedRestaurant.id), "customItems", String(itemId))
+          );
+        } catch (err) {
+          console.error("Failed to delete item from Firestore:", err);
+        }
+      }
     }
   };
 
@@ -366,7 +430,11 @@ export default function RestaurantAdminPanel() {
                       Menu Items ({filteredItems.length})
                     </h3>
                   </div>
-                  {filteredItems.length > 0 ? (
+                  {itemsLoading ? (
+                    <div className="flex justify-center py-12">
+                      <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-orange-500"></div>
+                    </div>
+                  ) : filteredItems.length > 0 ? (
                     <div className="overflow-x-auto">
                       <table className="w-full">
                         <thead className="bg-gray-50">

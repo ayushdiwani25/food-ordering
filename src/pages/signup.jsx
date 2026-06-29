@@ -4,11 +4,14 @@ import { m } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Mail, Lock, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../redux/userSlice";
-import { registerUser } from "../lib/storage";
 import { validateSignup } from "../lib/validation";
+
+// Firebase imports
+import { createUserWithEmailAndPassword, updateProfile as updateFirebaseProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
 
 const emojis = ["🍕", "🍔", "🥤", "🍟", "🌮", "🍦"];
 
@@ -25,6 +28,7 @@ export default function SignupPage() {
   });
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -38,7 +42,7 @@ export default function SignupPage() {
     setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate all fields are filled
@@ -54,25 +58,51 @@ export default function SignupPage() {
       return;
     }
 
-    // Try to register user
-    const result = registerUser({
-      name: form.name,
-      email: form.email,
-      phone: "",
-    });
+    setLoading(true);
+    setError("");
 
-    if (!result.success) {
-      setError("❌ " + result.message);
-      return;
+    try {
+      // 1. Create user in Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
+      const firebaseUser = userCredential.user;
+
+      // 2. Set displayName in Firebase Auth profile
+      await updateFirebaseProfile(firebaseUser, { displayName: form.name });
+
+      // 3. Create user document in Firestore
+      const userDoc = {
+        uid: firebaseUser.uid,
+        name: form.name,
+        email: form.email,
+        phone: "",
+        isAdmin: false,
+        memberSince: new Date().toLocaleDateString(),
+        createdAt: new Date().toISOString(),
+      };
+      await setDoc(doc(db, "users", firebaseUser.uid), userDoc);
+
+      // 4. Dispatch to Redux store
+      dispatch(login(userDoc));
+      setSignupSuccess(true);
+
+      setTimeout(() => {
+        navigate("/profile");
+      }, 1500);
+
+    } catch (err) {
+      console.error("Firebase signup error:", err.code);
+      if (err.code === "auth/email-already-in-use") {
+        setError("❌ An account with this email already exists.");
+      } else if (err.code === "auth/weak-password") {
+        setError("❌ Password is too weak. Use at least 6 characters.");
+      } else if (err.code === "auth/invalid-email") {
+        setError("❌ Invalid email address.");
+      } else {
+        setError("❌ Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
-
-    // Signup successful
-    dispatch(login(result.user));
-    setSignupSuccess(true);
-
-    setTimeout(() => {
-      navigate("/profile");
-    }, 1500);
   };
 
   if (signupSuccess) {
@@ -128,7 +158,7 @@ export default function SignupPage() {
             </p>
             {error && (
               <div className="bg-red-50 border-2 border-red-200 text-red-600 px-4 py-3 rounded-lg mb-4 font-semibold">
-                ⚠️ {error}
+                {error}
               </div>
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -139,7 +169,8 @@ export default function SignupPage() {
                   placeholder="Full Name"
                   value={form.name}
                   onChange={handleChange}
-                  className="w-full py-6 px-4 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:border-orange-500 transition-all outline-none"
+                  disabled={loading}
+                  className="w-full py-6 px-4 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:border-orange-500 transition-all outline-none disabled:opacity-50"
                 />
               </div>
 
@@ -151,7 +182,8 @@ export default function SignupPage() {
                   placeholder="Email Address"
                   value={form.email}
                   onChange={handleChange}
-                  className="w-full py-6 px-4 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:border-orange-500 transition-all outline-none"
+                  disabled={loading}
+                  className="w-full py-6 px-4 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:border-orange-500 transition-all outline-none disabled:opacity-50"
                 />
               </div>
 
@@ -163,7 +195,8 @@ export default function SignupPage() {
                   placeholder="Password (min 6 chars)"
                   value={form.password}
                   onChange={handleChange}
-                  className="w-full py-6 px-4 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:border-orange-500 transition-all outline-none"
+                  disabled={loading}
+                  className="w-full py-6 px-4 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:border-orange-500 transition-all outline-none disabled:opacity-50"
                 />
               </div>
 
@@ -175,17 +208,19 @@ export default function SignupPage() {
                   placeholder="Confirm Password"
                   value={form.confirmPassword}
                   onChange={handleChange}
-                  className="w-full py-6 px-4 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:border-orange-500 transition-all outline-none"
+                  disabled={loading}
+                  className="w-full py-6 px-4 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:border-orange-500 transition-all outline-none disabled:opacity-50"
                 />
               </div>
 
-              {/* Thickened Submit Button */}
-              <m.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              {/* Submit Button */}
+              <m.div whileHover={{ scale: loading ? 1 : 1.02 }} whileTap={{ scale: loading ? 1 : 0.98 }}>
                 <Button
                   type="submit"
-                  className="w-full py-6 bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-xl text-lg shadow-lg transition-all"
+                  disabled={loading}
+                  className="w-full py-6 bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-xl text-lg shadow-lg transition-all disabled:opacity-50"
                 >
-                  Create Account
+                  {loading ? "Creating Account..." : "Create Account"}
                 </Button>
               </m.div>
             </form>

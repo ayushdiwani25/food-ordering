@@ -5,9 +5,13 @@ import { placeOrder } from "../redux/orderSlice";
 import { useNavigate } from "react-router-dom";
 import { PROMO_CODES } from "../data";
 
+// Firebase imports
+import { collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
+
 export default function Checkout() {
   const cartItems = useSelector((state) => state.cart || []);
-  const { isLoggedIn } = useSelector(state => state.user);
+  const { isLoggedIn, user } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -102,7 +106,7 @@ export default function Checkout() {
     setPromoError("");
   };
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     if (!isLoggedIn) {
       alert("Please login first");
       return;
@@ -123,11 +127,29 @@ export default function Checkout() {
       deliveryCharge: deliveryCharge,
     };
     
-    // Dispatch order to Redux store
-    dispatch(placeOrder(orderData));
-    
-    // Order created and stored in Redux
-    
+    // 1. Dispatch order to Redux store
+    const orderId = `ORD-${Date.now()}`;
+    dispatch(placeOrder({ ...orderData, id: orderId }));
+
+    // 2. Persist order to Firestore
+    try {
+      const firestoreOrder = {
+        ...orderData,
+        id: orderId,
+        userId: user?.uid || null,
+        status: "Confirmed",
+        createdAt: new Date().toISOString(),
+        estimatedDelivery: new Date(Date.now() + 30 * 60000).toLocaleTimeString(),
+        isActive: true,
+        activeExpireTime: Date.now() + 10 * 60 * 1000,
+        placedAt: Date.now(),
+      };
+      await setDoc(doc(db, "orders", orderId), firestoreOrder);
+    } catch (err) {
+      console.error("Failed to save order to Firestore:", err);
+      // Non-blocking — order still works locally in Redux
+    }
+
     setOrderPlaced(true);
     dispatch(clearCart());
 

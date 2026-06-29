@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout, updateProfile } from "../redux/userSlice";
+import { logout, updateProfile, addAddress, deleteAddress } from "../redux/userSlice";
 import AddressManagement from "../components/address-management";
 import { m } from "framer-motion";
+
+// Firebase imports
+import { signOut, updateProfile as updateFirebaseProfile } from "firebase/auth";
+import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { auth, db } from "../firebase";
 
 // ===== HELPER: Tab Button =====
 function TabButton({ active, label, onClick }) {
@@ -45,6 +50,8 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState(user || {});
   const [activeTab, setActiveTab] = useState("profile");
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   // If not logged in, show login prompt
   if (!isLoggedIn || !user) {
@@ -69,14 +76,43 @@ export default function ProfilePage() {
     );
   }
 
-  const handleSave = () => {
-    dispatch(updateProfile(editData));
-    setIsEditing(false);
+  const handleSave = async () => {
+    setSaveLoading(true);
+    setSaveError("");
+    try {
+      // 1. Update Firestore user document
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, {
+        name: editData.name || user.name,
+        phone: editData.phone || "",
+      });
+
+      // 2. Update Firebase Auth displayName
+      if (auth.currentUser) {
+        await updateFirebaseProfile(auth.currentUser, {
+          displayName: editData.name || user.name,
+        });
+      }
+
+      // 3. Update Redux store
+      dispatch(updateProfile(editData));
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      setSaveError("Failed to save changes. Please try again.");
+    } finally {
+      setSaveLoading(false);
+    }
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      await signOut(auth); // Firebase session ends
+      dispatch(logout());  // Clear Redux store
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (
@@ -142,6 +178,12 @@ export default function ProfilePage() {
               <div>
                 <h3 className="text-2xl font-bold text-gray-800 mb-6">✏️ Edit Profile</h3>
 
+                {saveError && (
+                  <div className="bg-red-50 border-2 border-red-200 text-red-600 px-4 py-3 rounded-lg mb-4 font-semibold">
+                    {saveError}
+                  </div>
+                )}
+
                 <div className="space-y-4 mb-6">
                   <div>
                     <label className="block text-gray-700 font-semibold mb-2">Full Name</label>
@@ -178,9 +220,10 @@ export default function ProfilePage() {
                   <button
                     type="button"
                     onClick={handleSave}
-                    className="flex-1 px-6 py-3 bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg font-bold"
+                    disabled={saveLoading}
+                    className="flex-1 px-6 py-3 bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg font-bold disabled:opacity-50"
                   >
-                    💾 Save Changes
+                    {saveLoading ? "Saving..." : "💾 Save Changes"}
                   </button>
                   <button
                     type="button"
@@ -207,8 +250,6 @@ export default function ProfilePage() {
           <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white rounded-2xl p-8 shadow-md border-2 border-gray-200">
             <h3 className="text-2xl font-bold text-gray-800 mb-8">⚙️ Settings</h3>
 
-
-
             {/* Account Info */}
             <div className="mb-10 bg-gray-50 p-6 rounded-lg border-2 border-gray-300">
               <h4 className="text-lg font-bold text-gray-800 mb-4">ℹ️ Account Information</h4>
@@ -216,8 +257,6 @@ export default function ProfilePage() {
               <p className="text-gray-700"><strong>Account Type:</strong> {user?.isAdmin ? "👑 Admin" : "👤 User"}</p>
               <p className="text-gray-700"><strong>Member Since:</strong> {user?.memberSince}</p>
             </div>
-
-
 
             {/* Logout */}
             <m.button

@@ -4,11 +4,13 @@ import { m } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Mail, Lock } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../redux/userSlice";
-import { verifyLogin } from "../lib/storage";
 import { validateLogin } from "../lib/validation";
+
+// 1. Import Firebase auth methods and your initialized config
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase"; // Adjust this path to match your firebase.js location
 
 const emojis = ["🍕", "🍔", "🥤", "🍟", "🌮", "🍦"];
 
@@ -20,6 +22,7 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Added a loading state for network request
 
   // Redirect if already logged in
   useEffect(() => {
@@ -33,30 +36,53 @@ export default function LoginPage() {
     setError("");
   };
 
-  const handleSubmit = (e) => {
+  // 2. Turn the submit handler async to await the Firebase network call
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form
+    // Validate form structures locally first
     const validation = validateLogin(form);
     if (!validation.valid) {
       setError(validation.error);
       return;
     }
 
-    // Try to verify login
-    const result = verifyLogin(form.email, form.password);
-    if (!result.success) {
-      setError("❌ " + result.message);
-      return;
+    setLoading(true);
+    setError("");
+
+    try {
+      // 3. Authenticate with Firebase live backend
+      const userCredential = await signInWithEmailAndPassword(auth, form.email, form.password);
+      const firebaseUser = userCredential.user;
+
+      // 4. Construct user object for your Redux store
+      const userData = {
+        uid: firebaseUser.uid,
+        email: firebaseUser.email,
+        displayName: firebaseUser.displayName || "User",
+      };
+
+      // Login successful
+      dispatch(login(userData));
+      setLoginSuccess(true);
+
+      setTimeout(() => {
+        navigate("/profile");
+      }, 1500);
+
+    } catch (err) {
+      // 5. Catch Firebase specific errors cleanly
+      console.error("Firebase auth error:", err.code);
+      if (err.code === "auth/invalid-credential" || err.code === "auth/user-not-found" || err.code === "auth/wrong-password") {
+        setError("❌ Invalid email or password.");
+      } else if (err.code === "auth/too-many-requests") {
+        setError("⚠️ Access temporarily disabled due to many failed attempts. Try again later.");
+      } else {
+        setError("❌ Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
-
-    // Login successful
-    dispatch(login(result.user));
-    setLoginSuccess(true);
-
-    setTimeout(() => {
-      navigate("/profile");
-    }, 1500);
   };
 
   if (loginSuccess) {
@@ -113,7 +139,7 @@ export default function LoginPage() {
 
             {error && (
               <div className="bg-red-50 border-2 border-red-200 text-red-600 px-4 py-3 rounded-lg mb-4 font-semibold">
-                ⚠️ {error}
+                {error}
               </div>
             )}
 
@@ -125,8 +151,8 @@ export default function LoginPage() {
                   placeholder="Email Address"
                   value={form.email}
                   onChange={handleChange}
-                  /* Changed p-4 to py-6 px-4 for a taller, cleaner look */
-                  className="py-6 px-4 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white transition-all"
+                  disabled={loading}
+                  className="py-6 px-4 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white transition-all disabled:opacity-50"
                 />
               </div>
 
@@ -137,18 +163,18 @@ export default function LoginPage() {
                   placeholder="Password"
                   value={form.password}
                   onChange={handleChange}
-                  /* Changed p-4 to py-6 px-4 */
-                  className="py-6 px-4 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white transition-all"
+                  disabled={loading}
+                  className="py-6 px-4 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white transition-all disabled:opacity-50"
                 />
               </div>
 
-              <m.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <m.div whileHover={{ scale: loading ? 1 : 1.02 }} whileTap={{ scale: loading ? 1 : 0.98 }}>
                 <Button
                   type="submit"
-                  /* Removed conflicting p-5 and py-3. Used py-6 for matching thickness */
-                  className="w-full py-6 bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-xl text-lg shadow-lg transition-all"
+                  disabled={loading}
+                  className="w-full py-6 bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-xl text-lg shadow-lg transition-all disabled:opacity-50"
                 >
-                  Login
+                  {loading ? "Logging in..." : "Login"}
                 </Button>
               </m.div>
             </form>

@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addAddress, deleteAddress, selectAddress } from "../redux/userSlice";
 
+// Firebase imports
+import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { db } from "../firebase";
+
 export default function AddressManagement() {
   const dispatch = useDispatch();
-  const { addresses, selectedAddress } = useSelector(state => state.user);
+  const { addresses, selectedAddress, user } = useSelector(state => state.user);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     label: "",
@@ -14,16 +18,45 @@ export default function AddressManagement() {
     phone: ""
   });
 
-  const handleAddAddress = () => {
+  const handleAddAddress = async () => {
     if (formData.label && formData.street && formData.city && formData.pinCode) {
-      dispatch(
-        addAddress({
-          id: Date.now(),
-          ...formData
-        })
-      );
+      const newAddress = {
+        id: Date.now(),
+        ...formData
+      };
+
+      // Update Redux
+      dispatch(addAddress(newAddress));
+
+      // Persist to Firestore (store addresses as array on the user document)
+      if (user?.uid) {
+        try {
+          await updateDoc(doc(db, "users", user.uid), {
+            addresses: arrayUnion(newAddress)
+          });
+        } catch (err) {
+          console.error("Failed to save address to Firestore:", err);
+        }
+      }
+
       setFormData({ label: "", street: "", city: "", pinCode: "", phone: "" });
       setShowForm(false);
+    }
+  };
+
+  const handleDeleteAddress = async (address) => {
+    // Update Redux
+    dispatch(deleteAddress(address.id));
+
+    // Remove from Firestore
+    if (user?.uid) {
+      try {
+        await updateDoc(doc(db, "users", user.uid), {
+          addresses: arrayRemove(address)
+        });
+      } catch (err) {
+        console.error("Failed to delete address from Firestore:", err);
+      }
     }
   };
 
@@ -56,7 +89,7 @@ export default function AddressManagement() {
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    dispatch(deleteAddress(address.id));
+                    handleDeleteAddress(address);
                   }}
                   className="text-red-500 hover:text-red-700 font-semibold"
                 >

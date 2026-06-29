@@ -2,23 +2,34 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { m } from "framer-motion";
-import { expireActiveOrders, cancelOrder } from "../redux/orderSlice";
+import { expireActiveOrders, cancelOrder, loadOrders } from "../redux/orderSlice";
+
+// Firebase imports
+import { collection, query, where, getDocs, doc, updateDoc, orderBy } from "firebase/firestore";
+import { db } from "../firebase";
 
 export default function OrdersPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { orders } = useSelector(state => state.orders);
-  const { isLoggedIn } = useSelector(state => state.user);
+  const { isLoggedIn, user } = useSelector(state => state.user);
   const [activeTab, setActiveTab] = useState("active");
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [ordersLoading, setOrdersLoading] = useState(false);
 
   const handleViewDetails = (order) => {
     setSelectedOrder(order);
   };
 
-  const handleCancelOrder = (orderId) => {
+  const handleCancelOrder = async (orderId) => {
     if (window.confirm("Are you sure you want to cancel this order?")) {
       dispatch(cancelOrder(orderId));
+      // Sync cancellation to Firestore
+      try {
+        await updateDoc(doc(db, "orders", orderId), { status: "Cancelled" });
+      } catch (err) {
+        console.error("Failed to sync cancellation to Firestore:", err);
+      }
       alert("Order cancelled successfully!");
     }
   };
@@ -100,10 +111,33 @@ export default function OrdersPage() {
     }
   };
 
-  // Check active orders on mount
+  // Fetch orders from Firestore on mount and expire stale ones
   useEffect(() => {
     dispatch(expireActiveOrders());
-  }, [dispatch]);
+
+    if (!isLoggedIn || !user?.uid) return;
+
+    const fetchOrders = async () => {
+      setOrdersLoading(true);
+      try {
+        const q = query(
+          collection(db, "orders"),
+          where("userId", "==", user.uid)
+        );
+        const snapshot = await getDocs(q);
+        const firestoreOrders = snapshot.docs.map(d => d.data());
+        // Sort by placedAt descending
+        firestoreOrders.sort((a, b) => (b.placedAt || 0) - (a.placedAt || 0));
+        dispatch(loadOrders(firestoreOrders));
+      } catch (err) {
+        console.error("Failed to load orders from Firestore:", err);
+      } finally {
+        setOrdersLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [dispatch, isLoggedIn, user?.uid]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 md:px-8">
@@ -157,7 +191,11 @@ export default function OrdersPage() {
 
         {/* Orders List */}
         <div className="space-y-4">
-          {displayOrders.length > 0 ? (
+          {ordersLoading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-orange-500"></div>
+            </div>
+          ) : displayOrders.length > 0 ? (
             displayOrders.map((order, index) => {
               const timeRemaining = getTimeRemaining(order.activeExpireTime);
               return (

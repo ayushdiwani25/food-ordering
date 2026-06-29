@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Home from "./pages/home";
 import Food from "./pages/food";
@@ -16,8 +16,12 @@ import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import LoginPage from "./pages/login";
 import SignupPage from "./pages/signup";
+
+// Firebase imports
+import { onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "./firebase";
 import { restoreUserFromStorage } from "./redux/userSlice";
-import { getCurrentUser, getAddresses, getFavorites, initializeAdminUser } from "./lib/storage";
 
 // Page transition wrapper component
 const PageTransition = ({ children }) => (
@@ -35,26 +39,84 @@ export default function App() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart || []);
 
-  // Restore user from localStorage on app mount
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    // Initialize admin user on first load
-    initializeAdminUser();
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        try {
+          // Fetch full profile from Firestore (name, phone, isAdmin, addresses, etc.)
+          const userDocRef = doc(db, "users", firebaseUser.uid);
+          const userDocSnap = await getDoc(userDocRef);
 
-    const { user, isLoggedIn } = getCurrentUser();
-    const addresses = getAddresses();
-    const favorites = getFavorites();
+          let userProfile = {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            name: firebaseUser.displayName || "User",
+            isAdmin: false,
+            phone: "",
+            memberSince: "",
+          };
 
-    if (isLoggedIn && user) {
-      dispatch(
-        restoreUserFromStorage({
-          user,
-          isLoggedIn,
-          addresses,
-          favorites
-        })
-      );
-    }
+          let addresses = [];
+
+          if (userDocSnap.exists()) {
+            const firestoreData = userDocSnap.data();
+            userProfile = {
+              ...userProfile,
+              ...firestoreData,
+            };
+            addresses = firestoreData.addresses || [];
+          }
+
+          dispatch(
+            restoreUserFromStorage({
+              user: userProfile,
+              isLoggedIn: true,
+              addresses,
+              favorites: userProfile.favorites || [],
+            })
+          );
+        } catch (error) {
+          console.error("Error fetching user profile from Firestore:", error);
+          // Fallback to basic Firebase Auth data
+          dispatch(
+            restoreUserFromStorage({
+              user: {
+                uid: firebaseUser.uid,
+                email: firebaseUser.email,
+                name: firebaseUser.displayName || "User",
+              },
+              isLoggedIn: true,
+              addresses: [],
+              favorites: [],
+            })
+          );
+        }
+      } else {
+        // No authenticated session
+        dispatch(
+          restoreUserFromStorage({
+            user: null,
+            isLoggedIn: false,
+            addresses: [],
+            favorites: [],
+          })
+        );
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, [dispatch]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-orange-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-orange-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="App flex flex-col min-h-screen">
@@ -65,102 +127,18 @@ export default function App() {
             <main className="flex-1 flex flex-col">
               <AnimatePresence mode="wait">
                 <Routes>
-                  <Route 
-                    path="/" 
-                    element={
-                      <PageTransition>
-                        <Home />
-                      </PageTransition>
-                    } 
-                  />
-                  <Route 
-                    path="/login" 
-                    element={
-                      <PageTransition>
-                        <LoginPage />
-                      </PageTransition>
-                    } 
-                  />
-                  <Route 
-                    path="/signup" 
-                    element={
-                      <PageTransition>
-                        <SignupPage />
-                      </PageTransition>
-                    } 
-                  />
-                  <Route 
-                    path="/restaurants" 
-                    element={
-                      <PageTransition>
-                        <RestaurantsPage />
-                      </PageTransition>
-                    } 
-                  />
-                  <Route 
-                    path="/restaurant/:restaurantId" 
-                    element={
-                      <PageTransition>
-                        <RestaurantDetailsPage />
-                      </PageTransition>
-                    } 
-                  />
-                  <Route 
-                    path="/food" 
-                    element={
-                      <PageTransition>
-                        <Food />
-                      </PageTransition>
-                    } 
-                  />
-                  <Route 
-                    path="/cart" 
-                    element={
-                      <PageTransition>
-                        <Cart />
-                      </PageTransition>
-                    } 
-                  />
-                  <Route 
-                    path="/checkout" 
-                    element={
-                      <PageTransition>
-                        <Checkout />
-                      </PageTransition>
-                    } 
-                  />
-                  <Route 
-                    path="/profile" 
-                    element={
-                      <PageTransition>
-                        <ProfilePage />
-                      </PageTransition>
-                    } 
-                  />
-                  <Route 
-                    path="/orders" 
-                    element={
-                      <PageTransition>
-                        <OrdersPage />
-                      </PageTransition>
-                    } 
-                  />
-                  <Route 
-                    path="/deals" 
-                    element={
-                      <PageTransition>
-                        <DealsPage />
-                      </PageTransition>
-                    } 
-                  />
-                  <Route 
-                    path="/admin/restaurants" 
-                    element={
-                      <PageTransition>
-                        <RestaurantAdminPanel />
-                      </PageTransition>
-                    } 
-                  />
+                  <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+                  <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
+                  <Route path="/signup" element={<PageTransition><SignupPage /></PageTransition>} />
+                  <Route path="/restaurants" element={<PageTransition><RestaurantsPage /></PageTransition>} />
+                  <Route path="/restaurant/:restaurantId" element={<PageTransition><RestaurantDetailsPage /></PageTransition>} />
+                  <Route path="/food" element={<PageTransition><Food /></PageTransition>} />
+                  <Route path="/cart" element={<PageTransition><Cart /></PageTransition>} />
+                  <Route path="/checkout" element={<PageTransition><Checkout /></PageTransition>} />
+                  <Route path="/profile" element={<PageTransition><ProfilePage /></PageTransition>} />
+                  <Route path="/orders" element={<PageTransition><OrdersPage /></PageTransition>} />
+                  <Route path="/deals" element={<PageTransition><DealsPage /></PageTransition>} />
+                  <Route path="/admin/restaurants" element={<PageTransition><RestaurantAdminPanel /></PageTransition>} />
                 </Routes>
               </AnimatePresence>
             </main>
@@ -171,4 +149,3 @@ export default function App() {
     </div>
   );
 }
-
